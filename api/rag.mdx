@@ -1,0 +1,38 @@
+---
+title: RAG Operations
+description: Search and chat with your content
+---
+
+# RAG Operations
+
+## Query (Semantic Search)
+
+Search for detailed chunks of text relevant to a query.
+
+`POST /api/rag/query`
+
+<ParamField body="kbId" type="string" required>
+  ID of the knowledge base to search
+</ParamField>
+<ParamField body="query" type="string" required>
+  The search query
+</ParamField>
+<ParamField body="topK" type="number" default="5">
+  Number of results to return
+</ParamField>
+
+## Chat
+
+Generate an AI response based on your content.
+
+`POST /api/rag/chat`
+
+<ParamField body="kbId" type="string" required>
+  ID of the knowledge base
+</ParamField>
+<ParamField body="message" type="string" required>
+  The user's message/question
+</ParamField>
+<ParamField body="model" type="string" default="gpt-4o-mini">
+  LLM model to use
+</ParamField>

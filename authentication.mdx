@@ -1,0 +1,80 @@
+---
+title: Authentication
+description: Learn how to authenticate with the Jabrod API
+---
+
+# Authentication
+
+All API requests to Jabrod require authentication using an API key.
+
+## Getting an API Key
+
+<Steps>
+  <Step title="Sign up or Log in">
+    Go to [agent.jabrod.com](https://agent.jabrod.com)
+  </Step>
+  <Step title="Navigate to API Keys">
+    Click on your profile > **API Keys**
+  </Step>
+  <Step title="Create a new key">
+    Click **Create Key**, give it a name, and copy the key
+  </Step>
+</Steps>
+
+<Warning>
+Your API key is only shown once. Store it securely!
+</Warning>
+
+## Using Your API Key
+
+### With the SDK
+
+```typescript
+import { JabrodClient } from 'jabrod';
+
+const jabrod = new JabrodClient({
+  apiKey: 'jb_your_api_key_here'
+});
+```
+
+### With REST API
+
+Include your API key in the `Authorization` header:
+
+```bash
+curl -X GET "https://cloud.jabrod.com/api/kb" \
+  -H "Authorization: Bearer jb_your_api_key_here"
+```
+
+## API Key Format
+
+Jabrod API keys follow this format:
+
+| Prefix | Description |
+|--------|-------------|
+| `jb_` | Standard API key |
+
+## Security Best Practices
+
+<AccordionGroup>
+  <Accordion title="Never expose keys in client-side code">
+    API keys should only be used in server-side code. Never include them in frontend JavaScript.
+  </Accordion>
+  <Accordion title="Use environment variables">
+    Store API keys in environment variables, not in your codebase.
+  </Accordion>
+  <Accordion title="Rotate keys regularly">
+    Periodically create new keys and revoke old ones.
+  </Accordion>
+  <Accordion title="Use separate keys for environments">
+    Use different API keys for development, staging, and production.
+  </Accordion>
+</AccordionGroup>
+
+## Rate Limits
+
+| Plan | Requests/minute | Requests/day |
+|------|-----------------|--------------|
+| Free | 60 | 1,000 |
+| Pro | 300 | 50,000 |
+| Enterprise | Custom | Custom |

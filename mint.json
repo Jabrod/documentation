@@ -1,0 +1,95 @@
+{
+    "$schema": "https://mintlify.com/schema.json",
+    "name": "Jabrod",
+    "logo": {
+        "dark": "https://res.cloudinary.com/dc9msi1wn/image/upload/v1766340574/jabrod74ce7871-6abb-4acf-9a72-93a398e5bf27-removebg-preview_hsuqko.png",
+        "light": "https://res.cloudinary.com/dc9msi1wn/image/upload/v1766340574/jabrod74ce7871-6abb-4acf-9a72-93a398e5bf27-removebg-preview_hsuqko.png"
+    },
+    "favicon": "https://res.cloudinary.com/dc9msi1wn/image/upload/v1766340574/jabrod74ce7871-6abb-4acf-9a72-93a398e5bf27-removebg-preview_hsuqko.png",
+    "colors": {
+        "primary": "#7c3aed",
+        "light": "#a78bfa",
+        "dark": "#5b21b6",
+        "anchors": {
+            "from": "#7c3aed",
+            "to": "#3b82f6"
+        }
+    },
+    "topbarLinks": [
+        {
+            "name": "Dashboard",
+            "url": "https://agent.jabrod.com"
+        }
+    ],
+    "topbarCtaButton": {
+        "name": "Get API Key",
+        "url": "https://agent.jabrod.com/user"
+    },
+    "tabs": [
+        {
+            "name": "SDK Reference",
+            "url": "sdk"
+        },
+        {
+            "name": "API Reference",
+            "url": "api"
+        }
+    ],
+    "anchors": [
+        {
+            "name": "GitHub",
+            "icon": "github",
+            "url": "https://github.com/jabrod/sdk"
+        },
+        {
+            "name": "npm",
+            "icon": "npm",
+            "url": "https://www.npmjs.com/package/jabrod"
+        }
+    ],
+    "navigation": [
+        {
+            "group": "Getting Started",
+            "pages": [
+                "introduction",
+                "quickstart",
+                "authentication"
+            ]
+        },
+        {
+            "group": "SDK",
+            "pages": [
+                "sdk/installation",
+                "sdk/knowledge-bases",
+                "sdk/rag-query",
+                "sdk/rag-chat",
+                "sdk/usage"
+            ]
+        },
+        {
+            "group": "API Reference",
+            "pages": [
+                "api/overview",
+                "api/authentication",
+                "api/knowledge-bases",
+                "api/rag"
+            ]
+        }
+    ],
+    "footerSocials": {
+        "github": "https://github.com/jabrod",
+        "twitter": "https://twitter.com/jabrod"
+    },
+    "analytics": {
+        "gtm": {
+            "tagId": "G-4VCYPKG9VP"
+        }
+    },
+    "seo": {
+        "indexHiddenPages": false
+    },
+    "feedback": {
+        "thumbsRating": true,
+        "suggestEdit": true
+    }
+}

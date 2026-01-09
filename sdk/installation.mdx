@@ -1,0 +1,87 @@
+---
+title: Installation
+description: Install the Jabrod SDK in your project
+---
+
+# Installation
+
+The Jabrod SDK is available on npm and works with Node.js and browser environments.
+
+## Requirements
+
+- Node.js 18+ or browser with ES2020 support
+- TypeScript 4.7+ (optional but recommended)
+
+## Install
+
+<CodeGroup>
+```bash npm
+npm install jabrod
+```
+
+```bash yarn
+yarn add jabrod
+```
+
+```bash pnpm
+pnpm add jabrod
+```
+</CodeGroup>
+
+## Initialize
+
+```typescript
+import { JabrodClient } from 'jabrod';
+
+const jabrod = new JabrodClient({
+  apiKey: process.env.JABROD_API_KEY
+});
+```
+
+### Configuration Options
+
+| Option | Type | Required | Description |
+|--------|------|----------|-------------|
+| `apiKey` | string | Yes | Your Jabrod API key (starts with `jb_`) |
+| `baseUrl` | string | No | Custom API base URL (default: cloud.jabrod.com) |
+
+## TypeScript Support
+
+The SDK includes full TypeScript support with exported types:
+
+```typescript
+import type {
+  KnowledgeBase,
+  Document,
+  ChatResult,
+  QueryResult,
+  UsageStats
+} from 'jabrod';
+```
+
+## Error Handling
+
+```typescript
+import { JabrodClient, JabrodError } from 'jabrod';
+
+try {
+  const result = await jabrod.rag.query({ ... });
+} catch (error) {
+  if (error instanceof JabrodError) {
+    console.log(error.code);    // 'INVALID_API_KEY', etc.
+    console.log(error.message);
+    console.log(error.status);
+  }
+}
+```
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Knowledge Bases" icon="database" href="/sdk/knowledge-bases">
+    Create and manage knowledge bases
+  </Card>
+  <Card title="RAG Query" icon="magnifying-glass" href="/sdk/rag-query">
+    Semantic search with embeddings
+  </Card>
+</CardGroup>

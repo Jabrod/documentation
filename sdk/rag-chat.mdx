@@ -1,0 +1,54 @@
+---
+title: RAG Chat
+description: AI-powered chat with your knowledge base
+---
+
+# RAG Chat
+
+Get AI-generated responses grounded in your knowledge base content. The chat endpoint retrieves relevant context and generates a response using an LLM.
+
+## Quick Method
+
+```typescript
+const result = await jabrod.rag.chat({
+  kbId: 'kb_xxx',
+  message: 'Summarize the key points',
+  model: 'gpt-4o-mini'
+});
+
+console.log(result.message);
+console.log(result.sources);
+```
+
+## Builder Pattern (Recommended)
+
+```typescript
+const result = await jabrod.rag
+  .chatBuilder()
+  .withMessage('Summarize the key points')
+  .withKnowledgeBase('kb_xxx')
+  .withModel('gpt-4o-mini')
+  .withSystemPrompt('You are a helpful assistant.')
+  .withTopK(5)
+  .execute();
+```
+
+## Builder Methods
+
+| Method | Description |
+|--------|-------------|
+| `.withMessage(msg)` | Set the user message (required) |
+| `.withKnowledgeBase(kbId)` | Set the knowledge base ID (required) |
+| `.withModel(model)` | Set the LLM model |
+| `.withSystemPrompt(prompt)` | Custom system prompt |
+| `.withTopK(n)` | Number of context chunks (default: 5) |
+| `.execute()` | Execute the chat request |
+
+## Available Models
+
+| Model | Provider | Speed | Quality |
+|-------|----------|-------|---------|
+| `gpt-4o-mini` | OpenAI | Fast | Good |
+| `gpt-4o` | OpenAI | Medium | Excellent |
+| `claude-3-haiku` | Anthropic | Fast | Good |
+| `claude-3-sonnet` | Anthropic | Medium | Excellent |

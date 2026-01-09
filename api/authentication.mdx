@@ -1,0 +1,35 @@
+---
+title: Authentication
+description: API Authentication Endpoint
+---
+
+# Authentication
+
+The API uses your API key directly for authentication. There is no separate login endpoint to exchange credentials for a token.
+
+## Verify Credentials
+
+Test if your API key is valid.
+
+<ParamField header="Authorization" type="string" required>
+  Bearer token with your API key (e.g., `Bearer jb_...`)
+</ParamField>
+
+### Request
+
+```bash
+POST /api/auth/verify
+Authorization: Bearer jb_your_api_key
+```
+
+### Response
+
+```json
+{
+  "valid": true,
+  "identity": {
+    "userId": "user_123",
+    "tier": "pro"
+  }
+}
+```

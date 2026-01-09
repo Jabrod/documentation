@@ -1,0 +1,103 @@
+---
+title: Knowledge Bases
+description: Create and manage knowledge bases with the SDK
+---
+
+# Knowledge Bases
+
+Knowledge bases are containers for your documents. Create, manage, and upload documents to build searchable collections.
+
+## Create a Knowledge Base
+
+```typescript
+const kb = await jabrod.kb.create({
+  name: 'Product Docs',
+  description: 'Product documentation and guides'
+});
+
+console.log(kb.id);  // kb_xxx
+```
+
+## List Knowledge Bases
+
+```typescript
+const kbs = await jabrod.kb.list();
+
+for (const kb of kbs) {
+  console.log(`${kb.name}: ${kb.documentCount} documents`);
+}
+```
+
+## Get a Knowledge Base
+
+```typescript
+const kb = await jabrod.kb.get('kb_xxx');
+
+console.log(kb.name);
+console.log(kb.documentCount);
+```
+
+## Delete a Knowledge Base
+
+<Warning>
+This permanently deletes the knowledge base and all its documents.
+</Warning>
+
+```typescript
+await jabrod.kb.delete('kb_xxx');
+```
+
+## Upload Documents
+
+### Upload a File
+
+Works in both Node.js and browser environments:
+
+```typescript
+// Browser - from file input
+const fileInput = document.querySelector('input[type="file"]');
+await jabrod.kb.upload({
+  kbId: 'kb_xxx',
+  file: fileInput.files[0]
+});
+
+// Node.js - from file path
+import fs from 'fs';
+const buffer = fs.readFileSync('./document.pdf');
+const blob = new Blob([buffer], { type: 'application/pdf' });
+
+await jabrod.kb.upload({
+  kbId: 'kb_xxx',
+  file: blob,
+  filename: 'document.pdf'
+});
+```
+
+### Upload Text Content
+
+```typescript
+await jabrod.kb.uploadText({
+  kbId: 'kb_xxx',
+  content: 'Your text content here...',
+  name: 'notes.txt'
+});
+```
+
+## List Documents
+
+```typescript
+const docs = await jabrod.kb.listDocuments('kb_xxx');
+
+for (const doc of docs) {
+  console.log(`${doc.name} - ${doc.status}`);
+}
+```
+
+## Supported File Types
+
+| Type | Extension |
+|------|-----------|
+| PDF | `.pdf` |
+| Text | `.txt` |
+| Markdown | `.md` |
+| Word | `.docx` |
