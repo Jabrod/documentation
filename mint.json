@@ -57,6 +57,16 @@
             ]
         },
         {
+            "group": "Use Cases",
+            "pages": [
+                "api/use-cases/support-bot",
+                "api/use-cases/doc-search",
+                "api/use-cases/research-agent",
+                "api/use-cases/nextjs-chat",
+                "api/examples"
+            ]
+        },
+        {
             "group": "SDK",
             "pages": [
                 "sdk/installation",
@@ -72,8 +82,7 @@
                 "api/overview",
                 "api/authentication",
                 "api/knowledge-bases",
-                "api/rag",
-                "api/examples"
+                "api/rag"
             ]
         }
     ],
