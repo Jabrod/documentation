@@ -72,7 +72,8 @@
                 "api/overview",
                 "api/authentication",
                 "api/knowledge-bases",
-                "api/rag"
+                "api/rag",
+                "api/examples"
             ]
         }
     ],
