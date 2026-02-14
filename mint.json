@@ -73,6 +73,8 @@
                 "sdk/knowledge-bases",
                 "sdk/rag-query",
                 "sdk/rag-chat",
+                "sdk/agents",
+                "sdk/workflows",
                 "sdk/usage"
             ]
         },
