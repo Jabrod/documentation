@@ -94,6 +94,46 @@ console.log('Workflow undeployed successfully');
 | Executions/month | 100 | 10,000 | Unlimited |
 | Scheduled triggers | ❌ | ✅ | ✅ |
 
+## Complex Inputs
+
+Pass structured data objects to your workflows. The workflow can access these values using the `{{input.key}}` syntax in nodes.
+
+```typescript
+const result = await jabrod.workflows.trigger({
+  subdomain: 'lead-qualification',
+  input: {
+    user: {
+      name: 'John Doe',
+      email: 'john@example.com',
+      company: 'Acme Corp'
+    },
+    source: 'web_form',
+    timestamp: new Date().toISOString()
+  }
+});
+```
+
+## Error Handling
+
+Wrap workflow executions in try/catch blocks to handle potential failures:
+
+```typescript
+try {
+  const result = await jabrod.workflows.trigger({
+    subdomain: 'critical-pipeline',
+    input: { data: '...' }
+  });
+
+  if (result.status === 'failed') {
+    console.error('Workflow failed:', result.error);
+  } else {
+    console.log('Success:', result.output);
+  }
+} catch (error) {
+  console.error('Network or API error:', error);
+}
+```
+
 ## Webhook Integration
 
 Deployed workflows can be triggered as webhooks from external services. Use the execute endpoint URL:

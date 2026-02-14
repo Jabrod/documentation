@@ -17,6 +17,10 @@
     },
     "topbarLinks": [
         {
+            "name": "🚀 New: Agents & Workflows",
+            "url": "sdk/agents"
+        },
+        {
             "name": "Dashboard",
             "url": "https://agent.jabrod.com"
         }

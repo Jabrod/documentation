@@ -81,6 +81,40 @@ if (result.toolsUsed) {
 }
 ```
 
+## Error Handling
+
+Handle potential errors when communicating with agents:
+
+```typescript
+try {
+  const result = await jabrod.agents.chat({
+    agentId: 'your-agent-id',
+    message: 'Complex analysis task'
+  });
+} catch (error) {
+  if (error instanceof JabrodError) {
+    console.error('Agent Error:', error.message);
+    console.error('Status Code:', error.status);
+  } else {
+    console.error('Unexpected Error:', error);
+  }
+}
+```
+
+## Model Configuration
+
+Agents are configured with specific models in the dashboard, but you can see which model responded:
+
+```typescript
+const result = await jabrod.agents.chat({
+  agentId: 'agent-123',
+  message: 'Hello'
+});
+
+console.log(`Response generated using ${result.model}`);
+// => Response generated using openai/gpt-4o-mini
+```
+
 ## Getting Agent IDs
 
 You can find your agent ID in the Jabrod dashboard under **Agents → Agent Settings**, or in the agent URL after deployment.
