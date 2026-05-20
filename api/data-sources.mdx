@@ -1,0 +1,40 @@
+---
+title: Data Sources API
+description: Endpoints for managing data sources
+---
+
+# Data Sources API
+
+<Warning>
+These endpoints require Session Authentication (user login cookie) and cannot be called using a `rag_` API key. They are used internally by the Jabrod dashboard.
+</Warning>
+
+## List Data Sources
+
+`GET /api/rag/pipelines/[id]/sources`
+
+Returns all data sources associated with the specified pipeline.
+
+## Add Data Source
+
+`POST /api/rag/pipelines/[id]/sources`
+
+Adds a new data source to the pipeline.
+
+**Body:**
+- `type` (string): `text`, `file`, `url`, or `api`
+- `name` (string): Display name for the source
+- `content` (string): For `text` type
+- `url` (string): For `url` or `api` type
+- `fileName` (string): For `file` type
+- `fileSize` (number): For `file` type
+
+**Response Behavior:**
+- If type is `text`, `url`, or `api`: The source is created and a background ingestion process is triggered automatically. Returns the source.
+- If type is `file`: Returns the source AND a `uploadUrl` (a Google Cloud Storage signed URL). The client must then PUT the file binary to that URL.
+
+## Delete Data Source
+
+`DELETE /api/rag/pipelines/[id]/sources/[sourceId]`
+
+Deletes the data source. If it was a file, it also deletes the file from Google Cloud Storage.

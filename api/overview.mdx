@@ -5,20 +5,31 @@ description: REST API reference for Jabrod
 
 # API Overview
 
-The Jabrod API is a RESTful interface that allows you to manage knowledge bases, upload documents, and perform RAG operations.
+The Jabrod REST API allows you to programmatically query your RAG pipelines.
 
 ## Base URL
 
 All API requests should be made to:
 
 ```
-https://cloud.jabrod.com/api
+https://api.jabrod.com/api
 ```
 
-## Authentication
+*(Note: During local development, this will be `http://localhost:3000/api`)*
 
-Authentication is performed via the `Authorization` header with a Bearer token (your API key).
+## Core Endpoints
 
-```bash
-Authorization: Bearer jb_your_api_key_here
+The API is primarily designed for querying pipelines that you have configured in the Jabrod dashboard.
+
+- **Query**: `/rag/query` - Semantic search endpoint that accepts your `rag_` API key.
+
+## Response Format
+
+All successful responses are returned as JSON. Errors are returned with a corresponding HTTP status code (4xx or 5xx) and an error object.
+
+```json
+{
+  "error": "Message describing the error",
+  "code": "ERROR_CODE"
+}
 ```

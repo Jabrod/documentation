@@ -1,0 +1,29 @@
+---
+title: RAG Pipelines
+description: Understand how pipelines process your data
+---
+
+# RAG Pipelines
+
+A **Pipeline** in Jabrod represents a complete end-to-end configuration for processing and retrieving data. 
+
+Instead of manually wiring up chunkers, embedding models, and vector databases in your own code, you configure a Pipeline in the Jabrod dashboard.
+
+## Pipeline Components
+
+Every pipeline consists of:
+
+1. **Chunking Strategy**: How documents should be split into smaller pieces (Fixed size, Sentence, Semantic, etc.)
+2. **Embedding Model**: The AI model used to convert text chunks into vector embeddings (e.g., `text-embedding-3-small`).
+3. **Vector Store**: Where the embeddings are stored (e.g., Upstash).
+4. **Retrieval Config**: Rules for how data is fetched (e.g., Top K results, minimum similarity thresholds).
+
+## How it works
+
+1. You create a pipeline in the dashboard.
+2. You add **Data Sources** (files, URLs, text) to the pipeline.
+3. Jabrod automatically applies your configured chunking strategy to the data.
+4. Jabrod calls the configured embedding model for every chunk.
+5. Jabrod stores the embeddings in an isolated namespace within the vector database.
+6. You generate an **API Key** for the pipeline.
+7. You use the API key to call the `/rag/query` endpoint from your application.

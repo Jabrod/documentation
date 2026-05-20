@@ -1,0 +1,35 @@
+---
+title: Querying
+description: How retrieval works
+---
+
+# Querying & Retrieval
+
+Once your data is chunked, embedded, and stored, you can query it via the `/api/rag/query` endpoint.
+
+## The Retrieval Process
+
+When you send a query:
+
+1. **Query Embedding**: Jabrod converts your query string into a vector using the pipeline's configured embedding model.
+2. **Vector Search**: Jabrod searches the vector database for chunks whose vectors are closest (most similar) to the query vector.
+3. **Filtering**: Any results below the pipeline's configured **Similarity Threshold** are discarded.
+4. **Ranking**: The top `K` results are returned to you, ordered by similarity score.
+
+## Top K
+
+The `topK` parameter determines how many chunks are returned. 
+
+- A low `topK` (e.g., 3) returns only the most highly relevant pieces of information, which is cheaper and faster if you are feeding it into an LLM.
+- A high `topK` (e.g., 10-20) returns more context, which is useful if the answer is spread across multiple documents, but increases token usage if passed to an LLM.
+
+You configure a default `retrievalTopK` on the pipeline itself, but you can override it on a per-request basis in the API.
+
+## Similarity Threshold
+
+Vectors are compared using Cosine Similarity, which results in a score between 0 and 1. 
+
+- `1.0` means identical meaning.
+- `0.0` means completely unrelated.
+
+If you set a **Similarity Threshold** of `0.7`, Jabrod will ignore any chunks that score below `0.7`. This helps prevent "hallucinations" by ensuring that if no relevant data exists in the knowledge base, the API returns an empty array rather than returning vaguely related garbage.

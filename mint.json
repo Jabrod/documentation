@@ -17,23 +17,15 @@
     },
     "topbarLinks": [
         {
-            "name": "🚀 New: Agents & Workflows",
-            "url": "sdk/agents"
-        },
-        {
             "name": "Dashboard",
             "url": "https://agent.jabrod.com"
         }
     ],
     "topbarCtaButton": {
-        "name": "Get API Key",
-        "url": "https://agent.jabrod.com/user"
+        "name": "Get Started",
+        "url": "https://agent.jabrod.com"
     },
     "tabs": [
-        {
-            "name": "SDK Reference",
-            "url": "sdk"
-        },
         {
             "name": "API Reference",
             "url": "api"
@@ -43,12 +35,7 @@
         {
             "name": "GitHub",
             "icon": "github",
-            "url": "https://github.com/jabrod/sdk"
-        },
-        {
-            "name": "npm",
-            "icon": "npm",
-            "url": "https://www.npmjs.com/package/jabrod"
+            "url": "https://github.com/jabrod"
         }
     ],
     "navigation": [
@@ -61,40 +48,46 @@
             ]
         },
         {
-            "group": "Use Cases",
+            "group": "Core Concepts",
             "pages": [
-                "api/use-cases/support-bot",
-                "api/use-cases/doc-search",
-                "api/use-cases/research-agent",
-                "api/use-cases/nextjs-chat",
-                "api/examples"
+                "concepts/pipelines",
+                "concepts/data-sources",
+                "concepts/chunking",
+                "concepts/embeddings",
+                "concepts/querying"
             ]
         },
         {
-            "group": "SDK",
+            "group": "Plans & Limits",
             "pages": [
-                "sdk/installation",
-                "sdk/knowledge-bases",
-                "sdk/rag-query",
-                "sdk/rag-chat",
-                "sdk/agents",
-                "sdk/workflows",
-                "sdk/usage"
+                "plans"
             ]
         },
         {
             "group": "API Reference",
             "pages": [
                 "api/overview",
-                "api/authentication",
-                "api/knowledge-bases",
-                "api/rag"
+                "api/authentication"
+            ]
+        },
+        {
+            "group": "Pipelines",
+            "pages": [
+                "api/pipelines",
+                "api/data-sources",
+                "api/ingestion",
+                "api/api-keys"
+            ]
+        },
+        {
+            "group": "Query",
+            "pages": [
+                "api/rag-query"
             ]
         }
     ],
     "footerSocials": {
-        "github": "https://github.com/jabrod",
-        "twitter": "https://twitter.com/jabrod"
+        "github": "https://github.com/jabrod"
     },
     "analytics": {
         "gtm": {

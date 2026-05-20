@@ -1,120 +1,87 @@
 ---
 title: Quick Start
-description: Get up and running with Jabrod in 5 minutes
+description: Get up and running with Jabrod in minutes
 ---
 
 # Quick Start
 
-Get up and running with Jabrod in 5 minutes.
+Get up and running with Jabrod in minutes by creating a pipeline, adding data, and querying it via the API.
 
-## 1. Get Your API Key
+## 1. Create a Pipeline
+
+First, create a RAG pipeline from the Jabrod dashboard:
 
 <Steps>
   <Step title="Log in to your account">
-    Go to [agent.jabrod.com](https://agent.jabrod.com) and log in
+    Go to [agent.jabrod.com](https://agent.jabrod.com) and log in.
   </Step>
-  <Step title="Navigate to API Keys">
-    Go to **User** > **API Keys**
+  <Step title="Navigate to Pipelines">
+    Go to the **Pipelines** section in the dashboard.
   </Step>
-  <Step title="Create a new key">
-    Click **Create Key** and copy your key (starts with `jb_`)
+  <Step title="Create Pipeline">
+    Click **Create Pipeline**. Give it a name and configure the chunking strategy and embedding model.
   </Step>
 </Steps>
 
+## 2. Add Data Sources
+
+Once your pipeline is created, you need to add data to it:
+
+1. Open your pipeline.
+2. Go to the **Data Sources** tab.
+3. Click **Add Source** and upload a file, paste text, or provide a URL.
+4. Jabrod will automatically chunk and embed the data, storing it in the vector database.
+
+## 3. Generate an API Key
+
+To query your pipeline, you need a pipeline-specific API key:
+
+1. Go to the **API Keys** tab inside your pipeline.
+2. Click **Create Key**.
+3. **Copy the key immediately**. It starts with `rag_` and will only be shown once.
+
 <Warning>
-Store your API key securely. It will only be shown once!
+Store your API key securely. It provides access to query this specific pipeline.
 </Warning>
 
-## 2. Install the SDK
+## 4. Query your Pipeline
 
-<CodeGroup>
-```bash npm
-npm install jabrod
+Now you can use the REST API to query your knowledge base. Include your API key in the `Authorization` header.
+
+```bash
+curl -X POST https://api.jabrod.com/api/rag/query \
+  -H "Authorization: Bearer rag_your_key_here" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "What is the refund policy?",
+    "topK": 5
+  }'
 ```
 
-```bash yarn
-yarn add jabrod
-```
+### Response Example
 
-```bash pnpm
-pnpm add jabrod
-```
-</CodeGroup>
-
-## 3. Initialize the Client
-
-```typescript
-import { JabrodClient } from 'jabrod';
-
-const jabrod = new JabrodClient({
-  apiKey: process.env.JABROD_API_KEY
-});
-```
-
-## 4. Create a Knowledge Base
-
-```typescript
-const kb = await jabrod.kb.create({
-  name: 'My Documents',
-  description: 'Product documentation'
-});
-
-console.log('Created KB:', kb.id);
-```
-
-## 5. Upload Documents
-
-```typescript
-// Upload a file
-await jabrod.kb.upload({
-  kbId: kb.id,
-  file: myFile
-});
-
-// Or upload text directly
-await jabrod.kb.uploadText({
-  kbId: kb.id,
-  content: 'Your text content here...',
-  name: 'notes.txt'
-});
-```
-
-## 6. Query with RAG
-
-### Semantic Search (without LLM)
-
-```typescript
-const result = await jabrod.rag
-  .queryBuilder()
-  .withQuery('What is the refund policy?')
-  .withKnowledgeBase(kb.id)
-  .withTopK(5)
-  .execute();
-
-console.log(result.chunks);
-```
-
-### Chat with AI (with LLM)
-
-```typescript
-const response = await jabrod.rag
-  .chatBuilder()
-  .withMessage('Summarize the key points')
-  .withKnowledgeBase(kb.id)
-  .withModel('gpt-4o-mini')
-  .execute();
-
-console.log(response.message);
-console.log('Sources:', response.sources);
+```json
+{
+  "results": [
+    {
+      "content": "Our refund policy allows returns within 30 days of purchase...",
+      "score": 0.89,
+      "metadata": {
+        "sourceName": "refund-policy.pdf",
+        "chunkIndex": 4
+      }
+    }
+  ],
+  "pipelineId": "pip_123",
+  "query": "What is the refund policy?",
+  "topK": 5
+}
 ```
 
 ## Next Steps
 
 <CardGroup cols={2}>
-  <Card title="SDK Reference" icon="book" href="/sdk/installation">
-    Explore all SDK features
-  </Card>
   <Card title="API Reference" icon="code" href="/api/overview">
-    Use the REST API directly
+    Explore the full REST API documentation.
   </Card>
 </CardGroup>

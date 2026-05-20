@@ -5,76 +5,56 @@ description: Learn how to authenticate with the Jabrod API
 
 # Authentication
 
-All API requests to Jabrod require authentication using an API key.
+Jabrod uses two types of authentication depending on what you are trying to do:
 
-## Getting an API Key
+1. **Session Authentication**: Used for dashboard operations (creating pipelines, adding data sources). This is handled automatically by the web application.
+2. **API Key Authentication**: Used exclusively for querying a specific pipeline via the `/api/rag/query` endpoint.
+
+## RAG Query API Keys
+
+To query a pipeline from your own application, you must use a RAG API key.
+
+### Getting an API Key
+
+API keys are scoped to specific pipelines. To get one:
 
 <Steps>
-  <Step title="Sign up or Log in">
-    Go to [agent.jabrod.com](https://agent.jabrod.com)
+  <Step title="Navigate to your Pipeline">
+    Go to [agent.jabrod.com](https://agent.jabrod.com), open **Pipelines**, and select your pipeline.
   </Step>
-  <Step title="Navigate to API Keys">
-    Click on your profile > **API Keys**
+  <Step title="Go to API Keys">
+    Click on the **API Keys** tab.
   </Step>
-  <Step title="Create a new key">
-    Click **Create Key**, give it a name, and copy the key
+  <Step title="Create Key">
+    Click **Create Key**, give it a name, and copy the key.
   </Step>
 </Steps>
 
 <Warning>
-Your API key is only shown once. Store it securely!
+Your API key is only shown once. Store it securely! It starts with the prefix `rag_`.
 </Warning>
 
-## Using Your API Key
+### Using Your API Key
 
-### With the SDK
-
-```typescript
-import { JabrodClient } from 'jabrod';
-
-const jabrod = new JabrodClient({
-  apiKey: 'jb_your_api_key_here'
-});
-```
-
-### With REST API
-
-Include your API key in the `Authorization` header:
+Include your API key in the `Authorization` header when calling the query endpoint:
 
 ```bash
-curl -X GET "https://cloud.jabrod.com/api/kb" \
-  -H "Authorization: Bearer jb_your_api_key_here"
+curl -X POST "https://api.jabrod.com/api/rag/query" \
+  -H "Authorization: Bearer rag_your_key_here" \
+  -H "Content-Type: application/json" \
+  -d '{"query": "Your search query"}'
 ```
-
-## API Key Format
-
-Jabrod API keys follow this format:
-
-| Prefix | Description |
-|--------|-------------|
-| `jb_` | Standard API key |
 
 ## Security Best Practices
 
 <AccordionGroup>
   <Accordion title="Never expose keys in client-side code">
-    API keys should only be used in server-side code. Never include them in frontend JavaScript.
+    API keys should only be used in server-side code (e.g., your backend server, Next.js API routes). Never include them in frontend JavaScript where users can see them.
   </Accordion>
   <Accordion title="Use environment variables">
-    Store API keys in environment variables, not in your codebase.
+    Store API keys in environment variables (`.env`), not in your codebase.
   </Accordion>
-  <Accordion title="Rotate keys regularly">
-    Periodically create new keys and revoke old ones.
-  </Accordion>
-  <Accordion title="Use separate keys for environments">
-    Use different API keys for development, staging, and production.
+  <Accordion title="Key Scoping">
+    A `rag_` key only grants access to query the specific pipeline it was created for. It cannot be used to modify pipelines, delete data, or query other pipelines.
   </Accordion>
 </AccordionGroup>
-
-## Rate Limits
-
-| Plan | Requests/minute | Requests/day |
-|------|-----------------|--------------|
-| Free | 60 | 1,000 |
-| Pro | 300 | 50,000 |
-| Enterprise | Custom | Custom |

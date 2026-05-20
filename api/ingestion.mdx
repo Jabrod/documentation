@@ -1,0 +1,21 @@
+---
+title: Ingestion API
+description: Trigger pipeline re-indexing
+---
+
+# Ingestion API
+
+<Warning>
+These endpoints require Session Authentication (user login cookie) and cannot be called using a `rag_` API key. They are used internally by the Jabrod dashboard.
+</Warning>
+
+## Re-index Pipeline
+
+`POST /api/rag/pipelines/[id]/ingest`
+
+Triggers a background job to re-index all data sources currently attached to the pipeline.
+
+You should call this endpoint if you have changed the pipeline's chunking strategy or embedding model, as the existing chunks in the vector database will no longer match the new configuration.
+
+**Response Behavior:**
+This is a fire-and-forget endpoint. It returns a `200 OK` immediately, indicating the re-indexing process has started in the background. Check the status of individual data sources via the Data Sources API to monitor progress.

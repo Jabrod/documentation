@@ -1,0 +1,36 @@
+---
+title: API Keys API
+description: Manage pipeline API keys
+---
+
+# API Keys API
+
+<Warning>
+These endpoints require Session Authentication (user login cookie) and cannot be called using a `rag_` API key. They are used internally by the Jabrod dashboard.
+</Warning>
+
+API Keys are securely generated credentials used to call the `/api/rag/query` endpoint for a specific pipeline.
+
+## List API Keys
+
+`GET /api/rag/pipelines/[id]/keys`
+
+Returns a list of keys for the pipeline. Note that the full key is **never** returned after creation. Only a prefix is returned for identification purposes.
+
+## Create API Key
+
+`POST /api/rag/pipelines/[id]/keys`
+
+Generates a new API key for the pipeline.
+
+**Body:**
+- `name` (string): A descriptive name for the key.
+
+**Response:**
+Returns the API key object, including the `key` field which contains the full, raw API key (e.g., `rag_...`). **This is the only time the full key will be shown.** You must store it securely.
+
+## Revoke API Key
+
+`DELETE /api/rag/pipelines/[id]/keys/[keyId]`
+
+Revokes and deletes the API key. Any future queries using this key will be rejected.

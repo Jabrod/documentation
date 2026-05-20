@@ -1,0 +1,56 @@
+---
+title: Pipelines API
+description: Endpoints for managing pipelines
+---
+
+# Pipelines API
+
+<Warning>
+These endpoints require Session Authentication (user login cookie) and cannot be called using a `rag_` API key. They are used internally by the Jabrod dashboard.
+</Warning>
+
+## List Pipelines
+
+`GET /api/rag/pipelines`
+
+Returns a paginated list of pipelines belonging to the authenticated user.
+
+**Query Parameters:**
+- `page` (number): Page number (default: 1)
+- `pageSize` (number): Items per page (default: 10)
+- `search` (string): Search by pipeline name
+- `status` (string): Filter by status
+
+## Create Pipeline
+
+`POST /api/rag/pipelines`
+
+Creates a new RAG pipeline configuration. Enforces tier limits (e.g., Max 1 pipeline on Free tier).
+
+**Body:**
+- `name` (string)
+- `description` (string)
+- `chunkingStrategy` (string)
+- `chunkSize` (number)
+- `chunkOverlap` (number)
+- `embeddingModel` (string)
+- `vectorProvider` (string)
+- `retrievalTopK` (number)
+
+## Get Pipeline
+
+`GET /api/rag/pipelines/[id]`
+
+Returns the pipeline details, including a list of its associated Data Sources.
+
+## Update Pipeline
+
+`PATCH /api/rag/pipelines/[id]`
+
+Updates pipeline configuration. Note: Updating chunking or embedding settings does *not* automatically re-index existing data sources. You must trigger a re-index manually.
+
+## Delete Pipeline
+
+`DELETE /api/rag/pipelines/[id]`
+
+Deletes the pipeline. This triggers a cascade delete of all associated Data Sources and API Keys.

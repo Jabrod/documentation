@@ -1,35 +1,20 @@
 ---
-title: Authentication
-description: API Authentication Endpoint
+title: Authentication (API)
+description: Authentication for pipeline management endpoints
 ---
 
-# Authentication
+# API Authentication (Dashboard Endpoints)
 
-The API uses your API key directly for authentication. There is no separate login endpoint to exchange credentials for a token.
+While the `/rag/query` endpoint uses `rag_` API keys, all other endpoints (`/rag/pipelines/*`) are designed for the Jabrod dashboard and require **Session Authentication**.
 
-## Verify Credentials
+## Session Authentication
 
-Test if your API key is valid.
+Jabrod uses a session cookie-based authentication system. When a user logs in to the dashboard, a secure HTTP-only cookie is set.
 
-<ParamField header="Authorization" type="string" required>
-  Bearer token with your API key (e.g., `Bearer jb_...`)
-</ParamField>
+The API endpoints check this session to determine the `userId`, and then enforce ownership logic (e.g., ensuring `pipeline.userId === session.userId`).
 
-### Request
+### Calling Management Endpoints
 
-```bash
-POST /api/auth/verify
-Authorization: Bearer jb_your_api_key
-```
+If you are calling the management endpoints (Pipelines, Data Sources, Keys) from a script or external application, you cannot use a `rag_` API key. These endpoints are strictly bound to the active user session of the web application.
 
-### Response
-
-```json
-{
-  "valid": true,
-  "identity": {
-    "userId": "user_123",
-    "tier": "pro"
-  }
-}
-```
+For server-to-server programmatic pipeline management, Jabrod Enterprise offers Management API tokens (Coming Soon). For now, use the Jabrod Dashboard UI to configure pipelines.

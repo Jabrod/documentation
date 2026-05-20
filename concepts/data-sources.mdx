@@ -1,0 +1,29 @@
+---
+title: Data Sources
+description: Connect your data to Jabrod pipelines
+---
+
+# Data Sources
+
+A pipeline is only as good as the data inside it. Jabrod supports multiple data source types that you can add to your pipelines.
+
+## Supported Types
+
+| Type | Description |
+|------|-------------|
+| **Text** | Raw text pasted directly into the dashboard. Good for quick testing or small snippets. |
+| **File** | Upload documents (PDF, MD, TXT, JSON, CSV). Jabrod automatically parses and extracts the text. |
+| **URL** | Provide a web URL. Jabrod will fetch the page and extract the textual content. |
+| **API** | Provide an API endpoint. Jabrod will fetch the raw response. |
+| **GitHub** | *(Prototype)* Sync readmes from GitHub repositories. |
+
+## The Ingestion Process
+
+When you add a data source to a pipeline, it enters the ingestion queue:
+
+1. **Status: Pending** - The source is registered. (For files, this means it was uploaded to cloud storage).
+2. **Status: Processing** - Jabrod is currently downloading, parsing, chunking, and embedding the content.
+3. **Status: Indexed** - The process is complete. The chunks are now searchable via the query API.
+4. **Status: Error** - Something went wrong (e.g., unreadable PDF, broken URL).
+
+If you change a pipeline's settings (like the chunking strategy), you can trigger a **Re-index** to reprocess all data sources using the new configuration.

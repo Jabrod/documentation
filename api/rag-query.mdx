@@ -1,0 +1,61 @@
+---
+title: Query
+description: Semantic search against your pipeline
+---
+
+# RAG Query
+
+Query a specific pipeline using vector similarity search. This endpoint requires a pipeline-specific API key.
+
+`POST /rag/query`
+
+## Headers
+
+<ParamField header="Authorization" type="string" required>
+  Bearer token containing your pipeline API key (e.g., `Bearer rag_...`)
+</ParamField>
+<ParamField header="Content-Type" type="string" required>
+  Must be `application/json`
+</ParamField>
+
+## Body
+
+<ParamField body="query" type="string" required>
+  The search query you want to find context for.
+</ParamField>
+<ParamField body="topK" type="number">
+  The maximum number of results to return. Defaults to the pipeline's configured `retrievalTopK` setting. (Max: 20)
+</ParamField>
+
+## Response
+
+```json
+{
+  "results": [
+    {
+      "content": "The actual text chunk retrieved from your data sources...",
+      "score": 0.892,
+      "metadata": {
+        "sourceName": "document.pdf",
+        "sourceType": "file",
+        "chunkIndex": 12,
+        "totalChunks": 45
+      }
+    }
+  ],
+  "pipelineId": "pip_123",
+  "pipelineName": "Support Docs",
+  "query": "How do I reset my password?",
+  "topK": 5,
+  "totalResults": 1
+}
+```
+
+## Error Codes
+
+| HTTP Status | Code | Description |
+|-------------|------|-------------|
+| `401` | `MISSING_API_KEY` | No Authorization header provided. |
+| `401` | `INVALID_API_KEY` | The API key is invalid or has been revoked. |
+| `404` | `PIPELINE_NOT_FOUND` | The pipeline this key belongs to no longer exists. |
+| `400` | `MISSING_QUERY` | The `query` field was missing from the body. |

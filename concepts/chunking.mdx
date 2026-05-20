@@ -1,0 +1,50 @@
+---
+title: Chunking
+description: How Jabrod splits your documents
+---
+
+# Chunking
+
+LLMs have limited context windows, and vector databases perform best on smaller, focused pieces of text. **Chunking** is the process of splitting large documents into smaller pieces (chunks) before embedding them.
+
+Jabrod supports several chunking strategies that you can configure per-pipeline.
+
+## Strategies
+
+### Fixed Size
+*(Available on Free and Pro)*
+
+Splits text into chunks of an exact character length, with a slight overlap to prevent cutting context in half.
+- **Pros:** Fast, predictable, works well for unstructured data.
+- **Cons:** Can cut sentences or thoughts in half.
+
+### Sentence-Based
+*(Pro only)*
+
+Splits text at natural sentence boundaries (periods, exclamation marks).
+- **Pros:** Keeps complete thoughts intact.
+- **Cons:** Can result in very short or varying chunk sizes.
+
+### Paragraph-Based
+*(Pro only)*
+
+Splits text at double newlines.
+- **Pros:** Excellent for structured documents and articles.
+- **Cons:** Can fail if the document has erratic formatting.
+
+### Recursive Character
+*(Pro only)*
+
+Tries to split by paragraphs, then falls back to sentences, then to words if a chunk is still too large.
+- **Pros:** The most balanced approach for general-purpose documents.
+
+### Semantic Chunking
+*(Pro only)*
+
+Splits text into sentences, embeds each sentence, and groups them together as long as their cosine similarity stays above a dynamic threshold. When a topic shift is detected, a new chunk is started.
+- **Pros:** Extremely high quality. Keeps topically coherent information together.
+- **Cons:** Slower to process because it requires embedding every single sentence during ingestion.
+
+## Overlap
+
+Most strategies allow you to configure an **Overlap**. This means the end of Chunk A is repeated at the beginning of Chunk B. This ensures that if a search term crosses a chunk boundary, context isn't lost.

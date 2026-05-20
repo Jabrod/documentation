@@ -1,0 +1,29 @@
+---
+title: Embeddings
+description: How text is converted into numbers
+---
+
+# Embeddings
+
+An embedding is a list of floating-point numbers (a vector) that represents the semantic meaning of a piece of text. 
+
+By comparing these vectors using distance metrics (like Cosine Similarity), Jabrod can determine which chunks of text are most relevant to a user's query, even if they don't share the exact same keywords.
+
+## Supported Models
+
+Jabrod integrates with several embedding providers to give you flexibility between cost, speed, and quality.
+
+| Model | Dimensions | Provider | Tier | Notes |
+|-------|------------|----------|------|-------|
+| `text-embedding-3-small` | 1536 | OpenAI | Free / Pro | Fast, cheap, industry standard. |
+| `nomic-embed-text` | 768 | Nomic | Free / Pro | Open source alternative. |
+| `text-embedding-3-large` | 3072 | OpenAI | Pro | Higher precision for complex queries. |
+| `cohere/embed-english-v3.0`| 1024 | Cohere | Pro | Excellent for English RAG. |
+| `voyage/voyage-large-2` | 1536 | Voyage | Pro | State-of-the-art retrieval performance. |
+
+## The Embedding Process
+
+1. When a Data Source is chunked, Jabrod sends the chunks in batches to the selected embedding model.
+2. The model returns a vector for each chunk.
+3. Jabrod stores both the original text chunk and the vector in the Vector Database (Upstash).
+4. When you submit a Query, Jabrod embeds the query text using the *same* model, and asks the Vector Database to find the closest matching vectors.
