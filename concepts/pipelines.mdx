@@ -24,6 +24,20 @@ Every pipeline consists of:
 2. You add **Data Sources** (files, URLs, text) to the pipeline.
 3. Jabrod automatically applies your configured chunking strategy to the data.
 4. Jabrod calls the configured embedding model for every chunk.
-5. Jabrod stores the embeddings in an isolated namespace within the vector database.
+5. Jabrod stores the embeddings in an isolated namespace within the vector database (Upstash).
 6. You generate an **API Key** for the pipeline.
 7. You use the API key to call the `/rag/query` endpoint from your application.
+
+## Deployment Targets
+
+When creating a pipeline, you can specify its intended **Deployment Targets**. This helps organize and authorize how your RAG pipeline is consumed across your ecosystem.
+
+Jabrod supports the following targets:
+
+- **REST API** (Free / Pro): Direct API endpoint for programmatic access.
+- **Website Chatbot** (Pro): Embeddable chatbot widget for your website.
+- **Slack & Discord** (Pro): Deploy as a bot for team collaboration or community support.
+- **Internal Tools** (Pro): Integrate into company internal dashboards.
+- **Mobile App & Voice Assistant** (Pro): SDK for iOS, Android, and voice platforms like Alexa.
+- **Coding Copilot & Workflow** (Pro): Power AI coding assistants or use as nodes in automation workflows.
+- **Enterprise Automation** (Pro): Full enterprise automation and custom integrations.
