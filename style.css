@@ -45,6 +45,23 @@ button[class*="rounded"] {
   border-radius: 9999px !important;
 }
 
+/* Previous/next links: let the page description wrap instead of cutting it off with "…". */
+#pagination .pagination-next > div,
+#pagination .pagination-prev > div {
+  height: auto;
+  min-height: 4rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+#pagination .pagination-next span,
+#pagination .pagination-prev span {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  width: auto;
+  max-width: 24rem;
+}
+
 /* Tables and code blocks get the same hairline. */
 .dark table,
 .dark .code-block {
