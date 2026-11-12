@@ -1,9 +1,87 @@
 ---
 title: "Connect the Art studio over MCP"
 sidebarTitle: "Connect over MCP"
-description: "Use the Art studio from MCP clients."
+description: "Use the Art studio from Claude, Cursor and other MCP clients."
 ---
 
-<Note>The Art studio MCP server isn't released yet. Its setup and tools will be documented here when you can use it.</Note>
+<Note>The Art studio, and this server, aren't open to the public yet.</Note>
 
-[MCP servers](/platform/mcp) lists the Jabrod servers you can connect today.
+The Art studio's MCP server is a remote server at:
+
+```text
+https://jabrod.com/api/mcp/art
+```
+
+It speaks Streamable HTTP and answers each request with JSON. Tools act on the boards and media of the account that owns the API key, and generation spends that account's Art credits, the same as in the studio.
+
+## Authentication
+
+Make a personal API key at [jabrod.com/app/keys](https://jabrod.com/app/keys). It starts with `jbd_sk_` and is shown once. Send it with every request:
+
+```http
+Authorization: Bearer jbd_sk_…
+```
+
+## Client configuration
+
+<Tabs>
+  <Tab title="Claude Code">
+    ```bash
+    claude mcp add --transport http jabrod-art https://jabrod.com/api/mcp/art --header "Authorization: Bearer jbd_sk_…"
+    ```
+  </Tab>
+  <Tab title="Cursor">
+    ```json .cursor/mcp.json
+    {
+      "mcpServers": {
+        "jabrod-art": {
+          "url": "https://jabrod.com/api/mcp/art",
+          "headers": { "Authorization": "Bearer jbd_sk_…" }
+        }
+      }
+    }
+    ```
+  </Tab>
+  <Tab title="Claude Desktop">
+    Connect through `mcp-remote`. In **Settings ▸ Developer ▸ Edit Config**:
+
+    ```json claude_desktop_config.json
+    {
+      "mcpServers": {
+        "jabrod-art": {
+          "command": "npx",
+          "args": ["-y", "mcp-remote", "https://jabrod.com/api/mcp/art", "--header", "Authorization:${JABROD_KEY}"],
+          "env": { "JABROD_KEY": "Bearer jbd_sk_…" }
+        }
+      }
+    }
+    ```
+  </Tab>
+  <Tab title="Other clients">
+    Any client that supports Streamable HTTP servers with custom headers works. URL `https://jabrod.com/api/mcp/art`, header `Authorization: Bearer jbd_sk_…`.
+  </Tab>
+</Tabs>
+
+## Tools
+
+| Tool | Input | Returns |
+| --- | --- | --- |
+| `get_credits` | none | `{used, limit, left, pro}` |
+| `list_models` | none | `{image, video, voice}`: each model's id, label, options and credit price |
+| `list_boards` | none | `{boards: [{id, title, updated_at}]}` |
+| `get_board` | `board_id` | `{id, title, updated_at, nodes, edges, assets}` |
+| `create_board` | `title?` | `{id, title}` |
+| `list_assets` | `kind?` (`image`, `video` or `audio`), `limit?` (1 to 60, default 20) | `{assets: [{asset_id, kind, url, prompt?, created_at}]}` |
+| `generate_image` | `prompt`, `model?`, `aspect?` (`1:1`, `16:9`, `9:16`, `4:3`, `3:4`), `count?` (1 to 4), `board_id?` | `{assets: [{asset_id, url, kind, name}], credits: {used, limit, left}}` |
+| `generate_speech` | `text`, `model?`, `voice?`, `board_id?` | `{asset_id, url, kind, name, credits}` |
+
+### Notes
+
+- Call `list_models` for the model ids, aspects, voices and credit prices you can pass to the generate tools.
+- With `board_id`, generated media is also added to that board.
+- `get_board` returns each node's `kind`, and its text, prompt or media where it has them. `edges` are `{from, to}` node ids.
+- Video generation isn't available over MCP yet.
+
+## Errors
+
+A problem you can fix comes back as a tool result with `isError: true` and the studio's own message, for example when you run out of credits. Requests without a valid key get HTTP 401.
