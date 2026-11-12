@@ -35,8 +35,14 @@
   },
   "navbar": {
     "links": [
-      { "label": "jabrod.com", "href": "https://jabrod.com" },
-      { "label": "GitHub", "href": "https://github.com/Jabrod" }
+      {
+        "label": "jabrod.com",
+        "href": "https://jabrod.com"
+      },
+      {
+        "label": "GitHub",
+        "href": "https://github.com/Jabrod"
+      }
     ],
     "primary": {
       "type": "button",
@@ -48,27 +54,36 @@
     "products": [
       {
         "product": "Platform",
-        "description": "Your Jabrod account, MCP and product status",
+        "description": "Account, MCP, plans and availability",
         "icon": "layers",
         "groups": [
           {
             "group": "Get started",
-            "pages": ["index", "platform/account", "platform/status"]
+            "pages": [
+              "index",
+              "platform/account",
+              "platform/status",
+              "platform/pricing"
+            ]
           },
           {
             "group": "MCP",
-            "pages": ["platform/mcp"]
+            "pages": [
+              "platform/mcp"
+            ]
           }
         ]
       },
       {
-        "product": "Jabrod Art",
+        "product": "Art",
         "description": "JBD, the video editor, and the Art studio",
         "icon": "palette",
         "groups": [
           {
             "group": "Overview",
-            "pages": ["art/index"]
+            "pages": [
+              "art/index"
+            ]
           },
           {
             "group": "JBD",
@@ -82,76 +97,113 @@
           },
           {
             "group": "Art studio",
-            "pages": ["art/studio/index", "art/studio/mcp"]
+            "pages": [
+              "art/studio/index",
+              "art/studio/mcp"
+            ]
           }
         ]
       },
       {
-        "product": "Jabrod Signals",
+        "product": "Signals",
         "description": "Churn prediction trained on your own customers",
         "icon": "activity",
         "groups": [
           {
             "group": "Get started",
-            "pages": ["signals/index", "signals/quickstart"]
+            "pages": [
+              "signals/index",
+              "signals/quickstart"
+            ]
           },
           {
             "group": "Guides",
-            "pages": ["signals/connect-data", "signals/weekly-report"]
+            "pages": [
+              "signals/connect-data",
+              "signals/weekly-report"
+            ]
           },
           {
             "group": "Concepts",
-            "pages": ["signals/churn-definition", "signals/model", "signals/data-handling"]
+            "pages": [
+              "signals/churn-definition",
+              "signals/model",
+              "signals/data-handling"
+            ]
           },
           {
             "group": "Reference",
-            "pages": ["signals/mcp"]
+            "pages": [
+              "signals/mcp"
+            ]
           }
         ]
       },
       {
-        "product": "Jabrod Evals",
+        "product": "Evals",
         "description": "Evaluation for AI applications",
         "icon": "list-checks",
         "groups": [
           {
             "group": "Get started",
-            "pages": ["evals/index", "evals/quickstart"]
+            "pages": [
+              "evals/index",
+              "evals/quickstart"
+            ]
           },
           {
             "group": "Guides",
-            "pages": ["evals/test-sets", "evals/targets", "evals/regression-runs"]
+            "pages": [
+              "evals/test-sets",
+              "evals/targets",
+              "evals/regression-runs"
+            ]
           },
           {
             "group": "Concepts",
-            "pages": ["evals/suites", "evals/reports"]
+            "pages": [
+              "evals/suites",
+              "evals/reports"
+            ]
           },
           {
             "group": "Reference",
-            "pages": ["evals/mcp"]
+            "pages": [
+              "evals/mcp"
+            ]
           }
         ]
       },
       {
-        "product": "Context by Jabrod",
+        "product": "Context",
         "description": "Cited answers from your company's own sources",
         "icon": "library",
         "groups": [
           {
             "group": "Get started",
-            "pages": ["context/index", "context/quickstart"]
+            "pages": [
+              "context/index",
+              "context/quickstart"
+            ]
           },
           {
             "group": "Guides",
-            "pages": ["context/ingestion", "context/workspaces"]
+            "pages": [
+              "context/ingestion",
+              "context/workspaces"
+            ]
           },
           {
             "group": "Concepts",
-            "pages": ["context/cited-answers"]
+            "pages": [
+              "context/cited-answers"
+            ]
           },
           {
             "group": "Reference",
-            "pages": ["context/mcp"]
+            "pages": [
+              "context/mcp"
+            ]
           }
         ]
       },
@@ -162,7 +214,11 @@
         "groups": [
           {
             "group": "Getting started",
-            "pages": ["introduction", "quickstart", "authentication"]
+            "pages": [
+              "introduction",
+              "quickstart",
+              "authentication"
+            ]
           },
           {
             "group": "Core concepts",
@@ -176,19 +232,32 @@
           },
           {
             "group": "Plans and limits",
-            "pages": ["plans"]
+            "pages": [
+              "plans"
+            ]
           },
           {
             "group": "API reference",
-            "pages": ["api/overview", "api/authentication"]
+            "pages": [
+              "api/overview",
+              "api/authentication"
+            ]
           },
           {
             "group": "Pipelines",
-            "pages": ["api/pipelines", "api/data-sources", "api/ingestion", "api/api-keys"]
+            "pages": [
+              "api/pipelines",
+              "api/data-sources",
+              "api/ingestion",
+              "api/api-keys"
+            ]
           },
           {
             "group": "Query",
-            "pages": ["api/rag-query", "api/examples"]
+            "pages": [
+              "api/rag-query",
+              "api/examples"
+            ]
           }
         ]
       }
@@ -208,6 +277,11 @@
     "indexing": "navigable"
   },
   "contextual": {
-    "options": ["copy", "view", "claude", "cursor"]
+    "options": [
+      "copy",
+      "view",
+      "claude",
+      "cursor"
+    ]
   }
 }
