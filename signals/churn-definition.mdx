@@ -3,16 +3,18 @@ title: "Churn definition"
 description: "What counts as a customer leaving."
 ---
 
-The model learns from customers who left in the past, so "left" must be defined first. Pick one definition:
+The model learns from customers who left in the past, so "left" has to be defined first. There are three definitions:
 
 | Definition | A customer has churned when | Needs |
 | --- | --- | --- |
-| **Cancelled** | They have a cancellation date | `cancelled_at` in the customers file |
-| **Stopped paying** | No successful payment for N days after their last one (default 45) | A payments file |
-| **Went quiet** | No usage events for N days (default 30) | A usage events file. For products without billing data. |
+| **Cancelled** | They have a cancellation date, or a status such as `cancelled` | The customers file |
+| **Stopped paying** | No successful payment for 45 days after their last one | A payments file |
+| **Went quiet** | No usage events for 30 days | A usage events file |
 
-Signals suggests a default from the files you uploaded, and shows how many customers churned under each rule before you choose.
+The number of days for **Stopped paying** and **Went quiet** can be changed.
+
+For **Cancelled**, a customer whose status says they left but who has no cancellation date is counted as leaving on their last activity.
 
 ## Prediction window
 
-A score answers: **how likely is this customer to churn in the next 30 days?** The window can be set from 14 to 90 days. A longer window gives earlier warning with less precision.
+A score answers: how likely is this customer to churn in the next 30 days?

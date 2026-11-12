@@ -4,6 +4,85 @@ sidebarTitle: "Connect over MCP"
 description: "Use Context from Claude, Cursor and other MCP clients."
 ---
 
-<Note>The Context MCP server isn't released yet. Its tools, inputs and outputs will be listed here when you can use them.</Note>
+<Note>Context, and this server, aren't open to the public yet.</Note>
 
-It will be a remote MCP server on jabrod.com, signed in with your Jabrod account, so Claude, Cursor and other clients can list your workspaces, add sources, search passages and ask for cited answers.
+Context's MCP server is a remote server at:
+
+```text
+https://jabrod.com/api/mcp/context
+```
+
+It speaks Streamable HTTP and answers each request with JSON. Tools act on the workspaces of the account that owns the API key.
+
+## Authentication
+
+Make a personal API key at [jabrod.com/app/keys](https://jabrod.com/app/keys). It starts with `jbd_sk_` and is shown once. Send it with every request:
+
+```http
+Authorization: Bearer jbd_sk_…
+```
+
+Make one key per app, so you can revoke one without breaking the others. A revoked key stops working at once.
+
+## Client configuration
+
+<Tabs>
+  <Tab title="Claude Code">
+    ```bash
+    claude mcp add --transport http jabrod-context https://jabrod.com/api/mcp/context --header "Authorization: Bearer jbd_sk_…"
+    ```
+  </Tab>
+  <Tab title="Cursor">
+    ```json .cursor/mcp.json
+    {
+      "mcpServers": {
+        "jabrod-context": {
+          "url": "https://jabrod.com/api/mcp/context",
+          "headers": { "Authorization": "Bearer jbd_sk_…" }
+        }
+      }
+    }
+    ```
+  </Tab>
+  <Tab title="Claude Desktop">
+    Claude Desktop's config file starts local programs, so connect through `mcp-remote`, which forwards to the remote server. In **Settings ▸ Developer ▸ Edit Config**:
+
+    ```json claude_desktop_config.json
+    {
+      "mcpServers": {
+        "jabrod-context": {
+          "command": "npx",
+          "args": ["-y", "mcp-remote", "https://jabrod.com/api/mcp/context", "--header", "Authorization:${JABROD_KEY}"],
+          "env": { "JABROD_KEY": "Bearer jbd_sk_…" }
+        }
+      }
+    }
+    ```
+  </Tab>
+  <Tab title="Other clients">
+    Any client that supports Streamable HTTP servers with custom headers works. URL `https://jabrod.com/api/mcp/context`, header `Authorization: Bearer jbd_sk_…`.
+  </Tab>
+</Tabs>
+
+## Tools
+
+| Tool | Input | Returns |
+| --- | --- | --- |
+| `list_workspaces` | none | `[{id, name, documents, ready, created_at}]` |
+| `create_workspace` | `name` | `{id, name}` |
+| `list_documents` | `workspace_id` | `[{id, title, kind, status, chunks, error}]` |
+| `add_document` | `workspace_id`, and either `url`, or `title` and `text` (Markdown or plain text, up to 2 MB) | `{id, status: "queued"}` |
+| `delete_document` | `document_id` | `{deleted: true}` |
+| `search` | `workspace_id`, `query`, `k?` (1 to 20, default 6) | `[{document_id, title, locator, text}]`, best first |
+| `ask` | `workspace_id`, `question` | `{answer, refused, citations: [{n, document_id, title, locator, text}]}` |
+
+### Notes
+
+- **Adding sources is asynchronous.** `add_document` returns at once with `status: "queued"`. Call `list_documents` until the source is `ready` or `failed`.
+- **`search` writes no answer.** It returns the passages [retrieval](/context/cited-answers#retrieval) finds, so your own model can use them.
+- **`ask` can refuse.** When the sources don't cover the question, `refused` is `true` and the answer says so. See [Refusals](/context/cited-answers#refusals).
+- Questions asked over MCP are saved with the workspace, but are not offered as [Evals](/evals/test-sets) test cases.
+
+## Errors
+
+A problem you can fix comes back as a tool result with `isError: true` and a sentence saying what to do, such as "That workspace wasn't found." Requests without a valid key get HTTP 401.

@@ -8,61 +8,59 @@ Signals reads CSV exports. Only the customers file is required.
 | File | Required | Used for |
 | --- | --- | --- |
 | Customers | Yes | Who your customers are, when they joined, their plan and revenue, and when they left |
-| Payments or subscriptions | Recommended | Failed payments and gaps in paying |
-| Usage events | Recommended | How often and how much each customer uses your product |
-| Support tickets | Optional | Ticket volume and its trend |
+| Payments | No | Failed payments and gaps in paying |
+| Usage events | No | How often, and how much, each customer uses your product |
+| Support tickets | No | Ticket volume and its trend |
 
-Every file must have a customer id column that matches the customers file.
+Each file needs a customer id that matches the customers file.
 
 ## Columns
 
-Column names don't have to match these exactly. Signals guesses the mapping from your headers, and you confirm it.
+Your headers don't have to match these names. Signals guesses the mapping from common header names (for example `account_id`, `joined_on` or `monthly_fee`), and the guesses are confirmed before the data is used.
 
 ### Customers
 
-| Field | Example | Notes |
+| Field | Required | Example |
 | --- | --- | --- |
-| `customer_id` | `C-1042` | Required |
-| `name` | `Acme Logistics` | Shown in the report |
-| `signup_at` | `2025-03-14` | Required |
-| `plan` | `Growth` | |
-| `mrr` | `4999` | Monthly revenue, in your currency |
-| `cancelled_at` | `2026-08-02` | Empty while active. Needed for the "Cancelled" churn definition. |
+| Customer ID | Yes | `C-1042` |
+| Signed up | Yes | `2025-03-14` |
+| Name | | `Acme Logistics` |
+| Plan | | `Growth` |
+| Monthly revenue | | `4999` |
+| Cancelled on | | `2026-08-02`, empty while active |
+| Status | | `active`, `cancelled` |
 
 ### Payments
 
-| Field | Example | Notes |
+| Field | Required | Example |
 | --- | --- | --- |
-| `customer_id` | `C-1042` | |
-| `paid_at` | `2026-10-01` | |
-| `amount` | `4999` | |
-| `status` | `paid` | `paid`, `failed` or `refunded` |
+| Customer ID | Yes | `C-1042` |
+| Payment date | Yes | `2026-10-01` |
+| Amount | | `4999` |
+| Result | | `paid`, `failed` or `refunded` |
 
 ### Usage events
 
-| Field | Example | Notes |
+| Field | Required | Example |
 | --- | --- | --- |
-| `customer_id` | `C-1042` | |
-| `occurred_at` | `2026-10-03T09:12:00Z` | |
-| `event_name` | `report_exported` | Your own event names. Signals finds which ones matter. |
-| `quantity` | `1` | Optional |
+| Customer ID | Yes | `C-1042` |
+| When | Yes | `2026-10-03T09:12:00Z` |
+| Event | | `report_exported` |
+| Count | | `1` |
 
 ### Support tickets
 
-| Field | Example | Notes |
+| Field | Required | Example |
 | --- | --- | --- |
-| `customer_id` | `C-1042` | |
-| `opened_at` | `2026-10-05` | |
-| `priority` | `high` | Optional |
+| Customer ID | Yes | `C-1042` |
+| Opened | Yes | `2026-10-05` |
+| Priority | | `high` |
 
-## Dates
+## File format
 
-Signals detects the date format from each column's values and shows what it found before it imports anything. Use one format per column.
+- UTF-8, with or without a byte-order mark. Files that aren't valid UTF-8 are read as Latin-1.
+- Rows whose dates can't be read are dropped, and the number dropped is reported.
 
 ## How much history
 
-Twelve months or more works best. With under 3 months of history, or fewer than about 50 customers who left, the report is marked "not enough history to trust this yet".
-
-## Database access
-
-Read-only access to your database, instead of exports, isn't available yet.
+The model is marked "not enough data" with fewer than 50 churned customers, or under 90 days of history.

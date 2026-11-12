@@ -119,16 +119,14 @@
           {
             "group": "Guides",
             "pages": [
-              "signals/connect-data",
-              "signals/weekly-report"
+              "signals/connect-data"
             ]
           },
           {
             "group": "Concepts",
             "pages": [
               "signals/churn-definition",
-              "signals/model",
-              "signals/data-handling"
+              "signals/model"
             ]
           },
           {
