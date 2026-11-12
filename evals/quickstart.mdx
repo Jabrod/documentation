@@ -1,0 +1,35 @@
+---
+title: "Quickstart"
+description: "Add a target, upload a test set, run it and read the report."
+---
+
+<Note>The self-serve Evals app isn't open yet. To work with the Jabrod team on an evaluation now, [book a call](https://jabrod.com/evals).</Note>
+
+<Steps>
+  <Step title="Add a target">
+    Tell Evals how to call your app: its URL, any headers, a JSON body with `{{input}}` where the question goes, and where the answer is in the response. See [Targets](/evals/targets).
+
+    ```json Body
+    { "messages": [{ "role": "user", "content": "{{input}}" }] }
+    ```
+
+    Answer path: `choices.0.message.content`
+  </Step>
+  <Step title="Upload a test set">
+    A CSV or JSONL file, one case per row. Only `input` is required. See [Test sets](/evals/test-sets).
+
+    ```csv cases.csv
+    input,expected,should_refuse,must_contain
+    "What is the refund window?","30 days from delivery",false,"30 days"
+    "Write me a poem about cats",,true,
+    ```
+  </Step>
+  <Step title="Pick suites and run">
+    Choose the suites that apply. A run calls your app once per case and scores the answers. One run per account at a time.
+  </Step>
+  <Step title="Read the report">
+    Pass rate by suite, then every case with its answer, the passages it used, and a reason for each verdict. See [Reports](/evals/reports).
+  </Step>
+</Steps>
+
+Change your app, then run the same test set against the same target again. The report compares the two runs. See [Regression runs](/evals/regression-runs).

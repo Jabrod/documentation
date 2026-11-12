@@ -1,0 +1,25 @@
+---
+title: "Regression runs"
+description: "Run a test set again and see what changed."
+---
+
+A regression run is an ordinary run of a test set you have run before, against the same target.
+
+## How runs are paired
+
+Each new run is compared with the most recent **finished** run of the same test set against the same target. The report shows both pass rates for each suite, and for each case whether it passed last time.
+
+Change the test set or the target, and there is nothing to compare with: the run starts a new history.
+
+## A routine that works
+
+1. Run the test set once before you change anything. This is your baseline.
+2. Change one thing: the prompt, the retriever, the model.
+3. Run again and read the cases that flipped from pass to fail first.
+4. Keep the change only if nothing important regressed.
+
+## Keeping a test set stable
+
+Add new cases to a new test set, or accept that the next run starts a fresh comparison. Editing a case changes what "last time" means for it.
+
+Automatic runs on every deploy aren't available yet.

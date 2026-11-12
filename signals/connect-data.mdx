@@ -1,0 +1,66 @@
+---
+title: "Connect your data"
+description: "The CSV files Signals reads, and their columns."
+---
+
+Signals reads CSV exports. Only the customers file is required.
+
+| File | Required | Used for |
+| --- | --- | --- |
+| Customers | Yes | Who your customers are, when they joined, their plan and revenue, and when they left |
+| Payments | No | Failed payments and gaps in paying |
+| Usage events | No | How often, and how much, each customer uses your product |
+| Support tickets | No | Ticket volume and its trend |
+
+Each file needs a customer id that matches the customers file.
+
+## Columns
+
+Your headers don't have to match these names. Signals guesses the mapping from common header names (for example `account_id`, `joined_on` or `monthly_fee`), and the guesses are confirmed before the data is used.
+
+### Customers
+
+| Field | Required | Example |
+| --- | --- | --- |
+| Customer ID | Yes | `C-1042` |
+| Signed up | Yes | `2025-03-14` |
+| Name | | `Acme Logistics` |
+| Plan | | `Growth` |
+| Monthly revenue | | `4999` |
+| Cancelled on | | `2026-08-02`, empty while active |
+| Status | | `active`, `cancelled` |
+
+### Payments
+
+| Field | Required | Example |
+| --- | --- | --- |
+| Customer ID | Yes | `C-1042` |
+| Payment date | Yes | `2026-10-01` |
+| Amount | | `4999` |
+| Result | | `paid`, `failed` or `refunded` |
+
+### Usage events
+
+| Field | Required | Example |
+| --- | --- | --- |
+| Customer ID | Yes | `C-1042` |
+| When | Yes | `2026-10-03T09:12:00Z` |
+| Event | | `report_exported` |
+| Count | | `1` |
+
+### Support tickets
+
+| Field | Required | Example |
+| --- | --- | --- |
+| Customer ID | Yes | `C-1042` |
+| Opened | Yes | `2026-10-05` |
+| Priority | | `high` |
+
+## File format
+
+- UTF-8, with or without a byte-order mark. Files that aren't valid UTF-8 are read as Latin-1.
+- Rows whose dates can't be read are dropped, and the number dropped is reported.
+
+## How much history
+
+The model is marked "not enough data" with fewer than 50 churned customers, or under 90 days of history.

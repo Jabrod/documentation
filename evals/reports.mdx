@@ -1,0 +1,37 @@
+---
+title: "Reports"
+description: "Read a run's results, case by case."
+---
+
+A report has two parts.
+
+## Summary
+
+- The pass rate for each suite, and overall.
+- The same numbers from the previous run of this test set against this target, when there is one.
+- The run's test set, target, start time and duration.
+
+## Cases
+
+Every case in the test set, in order, with:
+
+| Field | Meaning |
+| --- | --- |
+| Input | The question sent to the app |
+| Answer | What the app returned |
+| Passages | What the app retrieved, when it reports it |
+| Tool calls | The tools the app called, with arguments |
+| Latency | How long the app took to answer |
+| Verdicts | Pass or fail for each suite, with the reason |
+| Previous | Whether the case passed each suite last time |
+
+A case whose call to the app failed shows the error instead of an answer, such as "The app answered HTTP 500" or "The app didn't answer with JSON."
+
+## Finding the cause
+
+Read failures by suite:
+
+- **Grounded** fails while **Correctness** passes: the answer is right, but the app is filling in from the model's memory. Check retrieval.
+- **Correctness** fails with relevant passages: the passages are there, but the app misreads them. Check the prompt.
+- **Correct refusals** fails on out-of-scope questions: the app answers things it shouldn't. Add a scope rule.
+- **Tool call arguments** fails on format: the reason shows the value it sent, such as a date in the wrong format.

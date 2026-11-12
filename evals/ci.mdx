@@ -1,0 +1,91 @@
+---
+title: "Run Evals in CI"
+sidebarTitle: "CI hook"
+description: "Start a run from your pipeline and fail the build on a drop."
+---
+
+<Note>The Evals app, and this hook, aren't open to the public yet. The hook is part of the Evals Pro plan.</Note>
+
+Two HTTP endpoints let a CI job start a run and read its result. Both take a personal API key from [jabrod.com/app/keys](https://jabrod.com/app/keys), stored as a CI secret:
+
+```http
+Authorization: Bearer jbd_sk_…
+```
+
+## Start a run
+
+```http
+POST https://jabrod.com/api/evals/v1/runs
+```
+
+| Field | Required | Meaning |
+| --- | --- | --- |
+| `dataset_id` | Yes | The test set to run |
+| `target_id` | One of these three | A [target](/evals/targets) |
+| `workspace_id` | | A Context workspace |
+| `traces` | | `true` to score the outputs recorded in the test set |
+| `suites` | No | Any of `grounded`, `correctness`, `refusals`, `tool_args`, `policy` |
+| `policy` | With `policy` | The policy text |
+
+It answers `202` with `{run_id, status: "queued", url}`. `url` opens the run's report in the Evals app.
+
+## Read the result
+
+```http
+GET https://jabrod.com/api/evals/v1/runs/<run_id>
+```
+
+```json Response
+{
+  "id": "…",
+  "status": "done",
+  "completed": 40,
+  "total": 40,
+  "pass_rate": 0.91,
+  "previous_pass_rate": 0.94,
+  "by_suite": { "grounded": { "passed": 37, "total": 40, "rate": 0.925 } },
+  "failures": [{ "input": "…", "suite": "grounded", "reason": "…", "regression": true }],
+  "regressions": 1,
+  "url": "https://jabrod.com/app/evals/runs/…"
+}
+```
+
+`status` is `queued`, `running`, `done` or `failed`. `previous_pass_rate` is the last finished run of the same test set against the same target. A failure with `regression: true` passed that suite last time.
+
+## Example: GitHub Actions
+
+```yaml .github/workflows/evals.yml
+name: evals
+on: [pull_request]
+jobs:
+  evals:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run the test set
+        env:
+          KEY: ${{ secrets.JABROD_API_KEY }}
+        run: |
+          RUN=$(curl -sf -X POST https://jabrod.com/api/evals/v1/runs \
+            -H "Authorization: Bearer $KEY" -H "Content-Type: application/json" \
+            -d '{"dataset_id":"<dataset id>","target_id":"<target id>"}' | jq -r .run_id)
+          while true; do
+            R=$(curl -sf https://jabrod.com/api/evals/v1/runs/$RUN -H "Authorization: Bearer $KEY")
+            S=$(echo "$R" | jq -r .status)
+            [ "$S" = done ] || [ "$S" = failed ] && break
+            sleep 15
+          done
+          echo "$R" | jq '{pass_rate, regressions, url}'
+          [ "$S" = done ] && [ "$(echo "$R" | jq .regressions)" -eq 0 ]
+```
+
+The last line fails the job when the run failed or any case regressed. Change it to compare `pass_rate` with a threshold if you prefer.
+
+## Errors
+
+| Status | Meaning |
+| --- | --- |
+| 401 | No key, or the key was revoked |
+| 402 | Your plan doesn't include the CI hook, or this month's runs are used up |
+| 404 | The run doesn't exist, or belongs to another account |
+| 409 | A run is already in progress. The response includes its `run_id`. |
+| 400 | Something in the request is wrong. `error` says what. |

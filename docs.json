@@ -1,0 +1,286 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "maple",
+  "name": "Jabrod Docs",
+  "description": "Documentation for every Jabrod product: Jabrod Art and JBD, Jabrod Signals, Jabrod Evals and Context by Jabrod.",
+  "colors": {
+    "primary": "#0A0A0A",
+    "light": "#FAFAFA",
+    "dark": "#FAFAFA"
+  },
+  "logo": {
+    "light": "/logo/jabrod-mark-black.png",
+    "dark": "/logo/jabrod-mark-white.png",
+    "href": "https://docs.jabrod.com"
+  },
+  "favicon": {
+    "light": "/logo/jabrod-mark-black.png",
+    "dark": "/logo/jabrod-mark-white.png"
+  },
+  "appearance": {
+    "default": "dark",
+    "strict": true
+  },
+  "background": {
+    "color": {
+      "light": "#FFFFFF",
+      "dark": "#080808"
+    }
+  },
+  "fonts": {
+    "family": "Geist"
+  },
+  "icons": {
+    "library": "lucide"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "jabrod.com",
+        "href": "https://jabrod.com"
+      },
+      {
+        "label": "GitHub",
+        "href": "https://github.com/Jabrod"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Sign in",
+      "href": "https://jabrod.com/sign-in"
+    }
+  },
+  "navigation": {
+    "products": [
+      {
+        "product": "Platform",
+        "description": "Account, MCP, plans and availability",
+        "icon": "layers",
+        "groups": [
+          {
+            "group": "Get started",
+            "pages": [
+              "index",
+              "platform/account",
+              "platform/status",
+              "platform/pricing"
+            ]
+          },
+          {
+            "group": "MCP",
+            "pages": [
+              "platform/mcp"
+            ]
+          }
+        ]
+      },
+      {
+        "product": "Art",
+        "description": "JBD, the video editor, and the Art studio",
+        "icon": "palette",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "art/index"
+            ]
+          },
+          {
+            "group": "JBD",
+            "pages": [
+              "art/jbd/install",
+              "art/jbd/first-edit",
+              "art/jbd/director",
+              "art/jbd/pro-and-credits",
+              "art/jbd/mcp"
+            ]
+          },
+          {
+            "group": "Art studio",
+            "pages": [
+              "art/studio/index",
+              "art/studio/mcp"
+            ]
+          }
+        ]
+      },
+      {
+        "product": "Signals",
+        "description": "Churn prediction trained on your own customers",
+        "icon": "activity",
+        "groups": [
+          {
+            "group": "Get started",
+            "pages": [
+              "signals/index",
+              "signals/quickstart"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "signals/connect-data"
+            ]
+          },
+          {
+            "group": "Concepts",
+            "pages": [
+              "signals/churn-definition",
+              "signals/model"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
+              "signals/mcp"
+            ]
+          }
+        ]
+      },
+      {
+        "product": "Evals",
+        "description": "Evaluation for AI applications",
+        "icon": "list-checks",
+        "groups": [
+          {
+            "group": "Get started",
+            "pages": [
+              "evals/index",
+              "evals/quickstart"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "evals/test-sets",
+              "evals/targets",
+              "evals/regression-runs"
+            ]
+          },
+          {
+            "group": "Concepts",
+            "pages": [
+              "evals/suites",
+              "evals/reports"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
+              "evals/mcp",
+              "evals/ci"
+            ]
+          }
+        ]
+      },
+      {
+        "product": "Context",
+        "description": "Cited answers from your company's own sources",
+        "icon": "library",
+        "groups": [
+          {
+            "group": "Get started",
+            "pages": [
+              "context/index",
+              "context/quickstart"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "context/ingestion",
+              "context/workspaces"
+            ]
+          },
+          {
+            "group": "Concepts",
+            "pages": [
+              "context/cited-answers"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
+              "context/mcp"
+            ]
+          }
+        ]
+      },
+      {
+        "product": "RAG API",
+        "description": "Pipelines API on agent.jabrod.com",
+        "icon": "database",
+        "groups": [
+          {
+            "group": "Getting started",
+            "pages": [
+              "introduction",
+              "quickstart",
+              "authentication"
+            ]
+          },
+          {
+            "group": "Core concepts",
+            "pages": [
+              "concepts/pipelines",
+              "concepts/data-sources",
+              "concepts/chunking",
+              "concepts/embeddings",
+              "concepts/querying"
+            ]
+          },
+          {
+            "group": "Plans and limits",
+            "pages": [
+              "plans"
+            ]
+          },
+          {
+            "group": "API reference",
+            "pages": [
+              "api/overview",
+              "api/authentication"
+            ]
+          },
+          {
+            "group": "Pipelines",
+            "pages": [
+              "api/pipelines",
+              "api/data-sources",
+              "api/ingestion",
+              "api/api-keys"
+            ]
+          },
+          {
+            "group": "Query",
+            "pages": [
+              "api/rag-query",
+              "api/examples"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "footer": {
+    "socials": {
+      "github": "https://github.com/Jabrod"
+    }
+  },
+  "integrations": {
+    "gtm": {
+      "tagId": "G-4VCYPKG9VP"
+    }
+  },
+  "seo": {
+    "indexing": "navigable"
+  },
+  "contextual": {
+    "options": [
+      "copy",
+      "view",
+      "claude",
+      "cursor"
+    ]
+  }
+}

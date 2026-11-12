@@ -1,0 +1,59 @@
+---
+title: "The AI Director"
+sidebarTitle: "AI Director"
+description: "Describe an edit. The Director makes it and checks it."
+---
+
+<Info>The Director is part of [JBD Pro](/art/jbd/pro-and-credits).</Info>
+
+The Director is JBD's own agent. You write what you want ("cut the pauses out of the interview", "add a 6-second intro shot of a city at night"). It writes a plan, runs editing tools one step at a time in front of you, can generate video and voiceover, and looks at rendered frames before it reports back.
+
+## Open it
+
+The Director is a tab on the right side of JBD, next to the Inspector and Transcript. Its prompt box takes text and attached files. `Enter` sends; `Shift+Enter` starts a new line.
+
+Inside the prompt box you pick:
+
+- **Thinking model**: the model that plans and runs the edit.
+- **Video model**: the model used when the Director generates a clip.
+- **Mode**: Ask, Auto edits or Plan.
+
+## Modes
+
+| Mode | What it does |
+| --- | --- |
+| **Ask** | Every tool asks before it runs. |
+| **Auto edits** (default) | Edits run straight away. Anything that spends credits asks first. |
+| **Plan** | Read-only. The Director looks and proposes, but changes nothing. Switch modes to run the plan. |
+
+Generating video always asks first, in every mode.
+
+## Undo
+
+One request is one undo step, named "Director: your request". To roll back everything the Director did for the last request, choose **Undo all** under the prompt box, or press `Ctrl+Z`.
+
+## Chats
+
+Each conversation is saved on your computer. The chats list shows them newest first; choose **New chat** to start fresh.
+
+## Connectors
+
+The Director can use tools from other programs over MCP, the same servers Claude Desktop runs. Add them in **Settings ▸ Connectors**. The file uses Claude Desktop's shape, so you can paste an existing `mcpServers` block:
+
+```json connectors.json
+{
+  "mcpServers": {
+    "notion": {
+      "command": "npx",
+      "args": ["-y", "@notionhq/notion-mcp-server"],
+      "env": { "NOTION_TOKEN": "your-token" }
+    }
+  }
+}
+```
+
+Connectors run as local programs over stdio. HTTP servers are not supported yet.
+
+## Credits
+
+Thinking, video and voiceover draw from your monthly [AI credits](/art/jbd/pro-and-credits#ai-credits). The Director shows the credits left under the prompt box, and the cost of a video before you approve it.

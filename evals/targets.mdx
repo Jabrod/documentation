@@ -1,0 +1,51 @@
+---
+title: "Targets"
+description: "Connect the AI application Evals should test."
+---
+
+A target is what a run sends questions to. There are two kinds.
+
+## HTTP target
+
+Any app that takes a JSON request over HTTP and answers with JSON.
+
+| Setting | Required | Example |
+| --- | --- | --- |
+| Name | Yes | `Support bot, staging` |
+| URL | Yes | `https://staging.example.com/api/chat` |
+| Headers | No | `Authorization: Bearer sk_test_…` |
+| Body | Yes | `{"question": "{{input}}"}` |
+| Answer path | Yes | `answer` |
+| Contexts path | No | `sources` |
+| Tool calls path | No | `tool_calls` |
+
+Evals sends a `POST` with `Content-Type: application/json`. It replaces `{{input}}` in the body with the case's input, escaped for JSON, so `{{input}}` must sit inside a string. Each call times out after 90 seconds.
+
+### Paths
+
+A path is a dot-separated route into the response JSON. Array items are numbers.
+
+```json Response
+{
+  "choices": [{ "message": { "content": "The refund window is 30 days." } }],
+  "sources": [{ "title": "Refund policy", "text": "Refunds are accepted within 30 days…" }]
+}
+```
+
+| Path | Value |
+| --- | --- |
+| `choices.0.message.content` | `"The refund window is 30 days."` |
+| `sources` | the array of passages |
+
+- **Contexts path** points to the passages your app retrieved: an array of strings, or of objects with `text` or `content`, and optionally `title` and `locator`. The Grounded suite needs it.
+- **Tool calls path** points to an array of tool calls in OpenAI's shape (`function.name`, `function.arguments`) or a flat `{name, arguments}` shape. Arguments may be a JSON string. The Tool call arguments suite needs it.
+
+### Keys and safety
+
+Header values are stored as you enter them. Use a key made only for testing, and revoke it when you are done.
+
+From jabrod.com, Evals cannot reach `localhost` or private network addresses. Test a staging URL that is reachable from the internet.
+
+## Context workspace
+
+Pick one of your [Context](/context/index) workspaces. Evals asks it each question directly and receives the answer and the passages it used, so the Grounded suite works with no paths to set.

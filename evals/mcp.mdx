@@ -1,0 +1,112 @@
+---
+title: "Connect Evals over MCP"
+sidebarTitle: "Connect over MCP"
+description: "Use Evals from Claude, Cursor and other MCP clients."
+---
+
+<Note>The Evals app, and this server, aren't open to the public yet. The server is part of the Evals Pro plan.</Note>
+
+Evals' MCP server is a remote server at:
+
+```text
+https://jabrod.com/api/mcp/evals
+```
+
+It speaks Streamable HTTP and answers each request with JSON. A coding agent can run your test set after a change and read which cases regressed, without leaving the editor.
+
+## Authentication
+
+Make a personal API key at [jabrod.com/app/keys](https://jabrod.com/app/keys). It starts with `jbd_sk_` and is shown once. Send it with every request:
+
+```http
+Authorization: Bearer jbd_sk_…
+```
+
+On a plan without MCP access, every tool answers: "The Evals MCP server is part of Evals Pro."
+
+## Client configuration
+
+<Tabs>
+  <Tab title="Claude Code">
+    ```bash
+    claude mcp add --transport http jabrod-evals https://jabrod.com/api/mcp/evals --header "Authorization: Bearer jbd_sk_…"
+    ```
+  </Tab>
+  <Tab title="Cursor">
+    ```json .cursor/mcp.json
+    {
+      "mcpServers": {
+        "jabrod-evals": {
+          "url": "https://jabrod.com/api/mcp/evals",
+          "headers": { "Authorization": "Bearer jbd_sk_…" }
+        }
+      }
+    }
+    ```
+  </Tab>
+  <Tab title="Claude Desktop">
+    Connect through `mcp-remote`. In **Settings ▸ Developer ▸ Edit Config**:
+
+    ```json claude_desktop_config.json
+    {
+      "mcpServers": {
+        "jabrod-evals": {
+          "command": "npx",
+          "args": ["-y", "mcp-remote", "https://jabrod.com/api/mcp/evals", "--header", "Authorization:${JABROD_KEY}"],
+          "env": { "JABROD_KEY": "Bearer jbd_sk_…" }
+        }
+      }
+    }
+    ```
+  </Tab>
+  <Tab title="Other clients">
+    Any client that supports Streamable HTTP servers with custom headers works. URL `https://jabrod.com/api/mcp/evals`, header `Authorization: Bearer jbd_sk_…`.
+  </Tab>
+</Tabs>
+
+## Tools
+
+| Tool | Input | Returns |
+| --- | --- | --- |
+| `list_targets` | `project_id?` | `[{id, name, kind, project_id, workspace_id}]`. `kind` is `context`, `http`, `openai` or `traces`. |
+| `list_datasets` | `project_id?` | `[{id, name, cases, recorded_outputs, source, project_id}]` |
+| `create_dataset` | `name`, `cases`, `project_id?` | `{id, cases}` |
+| `start_run` | `dataset_id`, one of `target_id` / `workspace_id` / `traces: true`, `suites?`, `policy?` | `{run_id, status: "queued"}` |
+| `get_run` | `run_id` | `{status, completed, total, pass_rate, by_suite, failures: [{input, suite, reason}], url}` |
+| `list_runs` | `project_id?`, `limit?` | Recent runs with their status and pass rate by suite |
+| `compare_runs` | `base_run_id`, `head_run_id` | Per suite `{base, head, delta}`, and `regressed: [{input, suite}]` |
+
+### `create_dataset` cases
+
+Each case takes the same fields as a [test set](/evals/test-sets) row:
+
+```json
+{
+  "name": "Refund questions",
+  "cases": [
+    { "input": "What is the refund window?", "expected": "30 days from delivery", "must_contain": ["30 days"] },
+    { "input": "Book a demo for 20 November", "expected_tool": { "name": "book_demo", "arguments": { "date": "2026-11-20" } } },
+    { "input": "What's the weather in Delhi?", "should_refuse": true }
+  ]
+}
+```
+
+A case can also carry `output`, the answer your app already gave, to score recorded outputs instead of calling the app. Run those with `traces: true`.
+
+### `start_run`
+
+- **What to test:** `target_id` for a [target](/evals/targets), or `workspace_id` for a Context workspace.
+- **Suites:** any of `grounded`, `correctness`, `refusals`, `tool_args`, `policy`. The default is `grounded`, `correctness` and `refusals`. `policy` needs the `policy` text. See [Suites and scoring](/evals/suites).
+- **One run at a time.** Starting a second run while one is in progress returns an error.
+- A run is asynchronous. Call `get_run` until `status` is `done` or `failed`.
+
+### A regression check from an agent
+
+1. `list_runs` to find the last good run of the test set.
+2. `start_run` with the same test set and target.
+3. `get_run` until it is done.
+4. `compare_runs` with the old run as `base_run_id` and the new one as `head_run_id`. Read `regressed` first.
+
+## Errors
+
+A problem you can fix comes back as a tool result with `isError: true` and a sentence saying what to do. Requests without a valid key get HTTP 401.

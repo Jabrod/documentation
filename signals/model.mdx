@@ -1,0 +1,71 @@
+---
+title: "The model"
+description: "How Signals trains, tests and explains its scores."
+---
+
+Each workspace has its own model, trained on that workspace's data.
+
+## Features
+
+For each customer, as of a given date:
+
+| Feature | Meaning |
+| --- | --- |
+| Tenure | Days since sign-up |
+| Plan, monthly revenue | From the customers file |
+| Days since last event | From usage events |
+| Events in 7 and 30 days | Sum of event counts |
+| Usage trend | The last 3 weeks against the 3 weeks before |
+| Active days in 30 | Days with at least one event |
+| Distinct events in 30 days | How many different events were used |
+| Days since the key event | The event whose absence best separates customers who left from those who stayed, chosen from your data |
+| Failed payments in 60 and 90 days | From payments |
+| Days since last successful payment | From payments |
+| Tickets in 30 days, and their trend | Against the 30 days before |
+
+A feature for a date only uses rows dated on or before it. Status and cancellation columns decide who churned; they are never used as features.
+
+## Training and testing
+
+1. **Snapshots.** Every 14 days through your history, each active customer's features are computed as of that day, and labelled by whether they churned in the 30 days after it.
+2. **Time split.** The most recent fifth of snapshot dates is held back for testing. The model is trained on the earlier dates only.
+3. **Model.** LightGBM, with early stopping, and class weights for the rarer churners. Scores are calibrated on the held-back weeks with isotonic regression.
+4. **Final fit.** The model is retrained on every labelled date, with the same settings, to score today's customers.
+
+## Quality numbers
+
+All measured on the held-back weeks:
+
+| Number | Meaning |
+| --- | --- |
+| ROC AUC | How well churners are ranked above stayers. 0.5 is chance. |
+| PR AUC | Ranking quality, weighted toward the customers you would act on |
+| Precision, top 10% and top 50 | Of the customers ranked highest, how many really churned |
+| Lift, top 10% | Precision in the top 10% divided by the base churn rate |
+
+Each model gets a verdict:
+
+| Verdict | When |
+| --- | --- |
+| Not enough data | Fewer than 50 churned customers, or under 90 days of history |
+| Suspicious | AUC above 0.97, which usually means a column is only filled in after a customer leaves |
+| Good | AUC 0.75 or higher |
+| Fair | AUC from 0.65 to 0.75 |
+| Weak | AUC below 0.65 |
+
+## Reasons
+
+Each score comes with the features pushing that customer's risk up most, measured with exact Tree SHAP values. Each becomes a sentence from a template, and a sentence is used only when the customer's own value supports it:
+
+| Feature | Sentence |
+| --- | --- |
+| Usage trend, 15% or more down | "Usage down 62% in 3 weeks" |
+| Days since last event, 7 or more | "No activity in 18 days" |
+| Failed payments | "Two failed payments in 60 days" |
+| Days since last payment, 35 or more | "No successful payment in 41 days" |
+| Key event, 14 or more days ago | "Hasn't used Reports in 30 days" |
+| Active days, 10 or fewer | "Active on only 4 of the last 30 days" |
+| Tickets | "3 support tickets in 30 days", "Support tickets up by 2 this month" |
+| Tenure, 180 days or less | "Joined 41 days ago" |
+
+The reasons are written from templates in the Signals service. No AI model writes them.

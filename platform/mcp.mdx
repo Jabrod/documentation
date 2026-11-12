@@ -1,0 +1,24 @@
+---
+title: "MCP servers"
+sidebarTitle: "Overview"
+description: "Use Jabrod products from Claude, Cursor and more."
+---
+
+The Model Context Protocol (MCP) lets an AI app such as Claude Code, Claude Desktop or Cursor use another program's tools. JBD has an MCP server today.
+
+| Product | Server | Available | Setup |
+| --- | --- | --- | --- |
+| JBD | `jbd-mcp.exe`, a local program installed with JBD | Yes | [Connect JBD](/art/jbd/mcp) |
+| Art studio | Remote server on jabrod.com | Not yet | [Art studio MCP](/art/studio/mcp) |
+| Signals | Remote server on jabrod.com | Not yet | [Signals MCP](/signals/mcp) |
+| Evals | Remote server on jabrod.com | Not yet | [Evals MCP](/evals/mcp) |
+| Context | Remote server on jabrod.com | Not yet | [Context MCP](/context/mcp) |
+
+## Local and remote servers
+
+- A **local** server is a program on your computer. The client starts it and talks to it over stdio. JBD's server is local because your projects are local.
+- A **remote** server runs on a website, and the client connects to it over HTTPS. Jabrod has no remote MCP servers released yet.
+
+## Tool names
+
+Clients show a tool with the server's name in front of it. If you add JBD's server as `jbd`, Claude Code shows `command_run` as `mcp__jbd__command_run`. Name each server after its product so the tools are easy to tell apart.

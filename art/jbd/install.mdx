@@ -1,0 +1,54 @@
+---
+title: "Install JBD"
+sidebarTitle: "Install"
+description: "Download JBD for Windows, sign in and keep it up to date."
+---
+
+JBD runs on Windows 10 and 11 (64-bit). Your projects and media stay on your computer.
+
+## Download
+
+<Tabs>
+  <Tab title="jabrod.com">
+    1. Download the installer from [jabrod.com/download/jbd/1.1.1](https://jabrod.com/download/jbd/1.1.1). It is about 27 MB.
+    2. Run `JBD-1.1.1-setup.exe`. It installs for your Windows user only, so it needs no administrator rights.
+    3. Open JBD from the Start menu or the desktop shortcut.
+
+    JBD installs to `%LOCALAPPDATA%\JBD`. This build includes `jbd-mcp.exe`, the [MCP server](/art/jbd/mcp).
+
+    <Note>
+      The installer is not code-signed yet, so Windows SmartScreen may say "unknown publisher". Choose **More info**, then **Run anyway**.
+    </Note>
+
+    To check the file, compare its SHA-256 hash:
+
+    ```powershell
+    Get-FileHash .\JBD-1.1.1-setup.exe -Algorithm SHA256
+    # e0cde57f4e91a0c74ef0702515e4c616fa738d08948738c97d5dd749b2ee2779
+    ```
+  </Tab>
+  <Tab title="Microsoft Store">
+    Install JBD from the [Microsoft Store](https://apps.microsoft.com/detail/9P0KS6185QSX). The Store keeps it up to date.
+  </Tab>
+</Tabs>
+
+## Sign in
+
+JBD asks for a [Jabrod account](/platform/account) when it first opens. Choose **Sign in**, finish in your browser, and return to JBD. A free account is enough to edit and export.
+
+## Updates
+
+The jabrod.com build checks for new versions itself. To check now, choose **Help ▸ Check for Updates**. Every version is listed in the [changelog](https://art.jabrod.com/jbd/changelog) and on [GitHub Releases](https://github.com/Jabrod/jbd/releases).
+
+## Build from source
+
+You need Rust (stable, MSVC toolchain) and the Visual Studio 2022 C++ Build Tools.
+
+```powershell
+git clone https://github.com/Jabrod/jbd.git
+cd jbd
+.\start-jbd.cmd          # opens the Home screen
+.\start-jbd.cmd demo     # opens the demo project
+```
+
+The first build compiles about 50 crates and takes a while.
