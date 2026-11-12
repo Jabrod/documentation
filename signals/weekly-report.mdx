@@ -1,0 +1,36 @@
+---
+title: "The weekly at-risk report"
+sidebarTitle: "Weekly report"
+description: "Read the list, act on it, and export it."
+---
+
+The report is titled with its week, for example "Customers at risk, week of 9 Nov 2026".
+
+## The list
+
+Each row is one active customer:
+
+| Column | Meaning |
+| --- | --- |
+| Customer | Name, or id if there is no name |
+| Risk | Chance of churning in the prediction window, as a percentage |
+| Rank | Position in the list, highest risk first |
+| Reasons | The two or three things raising this customer's risk most |
+
+You can show the top 25, the top 50 or everyone, and search by name or id.
+
+## Model quality
+
+Next to the list, a card shows how well the model did on your most recent months, with a plain verdict. Read it before acting on the list. See [The model](/signals/model#quality-numbers).
+
+## Acting on it
+
+Start at the top. The reasons point to the action: a customer with failed payments needs billing help; one whose usage fell needs a check-in from their account owner.
+
+## Export
+
+Choose **Export CSV** to download the list with every column. Paste it into your CRM or share it with your team.
+
+## Refreshing
+
+During a pilot, the list is rescored when new exports arrive. Automatic weekly refreshes will follow once data can arrive without manual uploads.

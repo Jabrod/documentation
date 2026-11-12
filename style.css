@@ -1,0 +1,52 @@
+/*
+ * Jabrod look for the Mintlify site (Mintlify loads every .css file in the repo).
+ * Matches jabrod.com's design system: #080808 page, Geist and Geist Mono,
+ * tight display headings, rounded-3xl cards, pill buttons, greyscale only.
+ */
+@import url("https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&display=swap");
+
+:root {
+  --jabrod-border: rgba(255, 255, 255, 0.08);
+  --jabrod-surface: rgba(255, 255, 255, 0.02);
+}
+
+/* Headlines: Geist 500, -0.04em, tight leading (jabrod.com's .font-display). */
+h1,
+h2,
+h3,
+#page-title {
+  font-weight: 500 !important;
+  letter-spacing: -0.04em;
+}
+h1,
+#page-title {
+  line-height: 1.02;
+}
+
+/* Code in Geist Mono. */
+code,
+pre,
+kbd {
+  font-family: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace !important;
+}
+
+/* Cards: rounded-3xl on a faint surface with a hairline border. */
+.dark .card,
+.dark a.card {
+  border-radius: 24px !important;
+  border-color: var(--jabrod-border) !important;
+  background-color: var(--jabrod-surface) !important;
+}
+
+/* Buttons are pills. */
+#navbar a[href*="sign-in"],
+#topbar-cta-button a,
+button[class*="rounded"] {
+  border-radius: 9999px !important;
+}
+
+/* Tables and code blocks get the same hairline. */
+.dark table,
+.dark .code-block {
+  border-color: var(--jabrod-border) !important;
+}

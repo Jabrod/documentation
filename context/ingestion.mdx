@@ -1,0 +1,42 @@
+---
+title: "Ingestion"
+description: "Which sources Context reads, and how they become searchable passages."
+---
+
+## Supported sources
+
+| Source | Limit | Split into sections by | Citation shows |
+| --- | --- | --- | --- |
+| PDF | 10 MB | Page | `Page 4` |
+| Word (`.docx`) | 10 MB | Heading | `Refunds › Exceptions` |
+| Markdown (`.md`, `.markdown`, `.mdx`) | 10 MB | Heading | The heading path |
+| Plain text (`.txt`) | 10 MB | Markdown-style headings, if any | The heading path |
+| Web page (URL) | One page per URL | Heading | The heading path |
+
+You can upload up to 10 files at a time.
+
+Scanned PDFs without a text layer have no text to read. Run OCR on them first.
+
+### Web pages
+
+Context fetches the page from its own server and reads its HTML. It fetches only the URL you give it, not the pages it links to. Local and private network addresses (`localhost`, `10.x`, `192.168.x` and similar) are refused.
+
+## Statuses
+
+| Status | Meaning |
+| --- | --- |
+| Queued | Waiting to be read |
+| Parsing | Text is being extracted and split |
+| Embedding | Passages are being indexed for search |
+| Ready | The source can be cited in answers |
+| Failed | It couldn't be read. The error says why. |
+
+## Passages
+
+Each section is cut into passages of about 1,100 characters, at paragraph boundaries where possible, then at sentence boundaries. Neighbouring passages overlap by about 180 characters, so a fact split between two passages is still found whole in one. Each passage keeps its section's locator for citations.
+
+Passages are indexed twice: as a 1,024-dimension embedding for search by meaning, and as English full text for search by keyword.
+
+## Updating a source
+
+To replace a source with a newer version, delete it and add the new one.

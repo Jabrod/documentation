@@ -1,0 +1,32 @@
+---
+title: "Data handling"
+description: "Where your data is kept, who it is used for, and how it is deleted."
+---
+
+## Kept separately
+
+Every row Signals stores is tagged with your workspace. Every query is limited to the workspace its signed-in owner holds.
+
+## Used only for you
+
+- One model per business, trained only on that business's rows.
+- No shared or global model.
+- No customer data is sent to an AI model or any third party. Reasons come from templates.
+
+## Deleted when the pilot ends
+
+Each workspace has a pilot end date. On that date, or earlier if you ask:
+
+- Every uploaded file, customer row, model and score is deleted together.
+- A deletion record is kept with the date and the number of rows removed. It contains no customer data.
+
+## What is stored
+
+| Data | Why |
+| --- | --- |
+| Your uploaded CSV files, compressed | So column mappings can change without uploading again |
+| Customers, payments, events, tickets | To build features |
+| Trained models | To score customers |
+| Scores and reasons | To show the report |
+
+Questions about your data: [privacy@jabrod.com](mailto:privacy@jabrod.com).

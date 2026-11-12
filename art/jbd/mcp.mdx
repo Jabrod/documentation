@@ -1,0 +1,155 @@
+---
+title: "Connect JBD over MCP"
+sidebarTitle: "Connect over MCP"
+description: "Let Claude Code, Claude Desktop, Cursor or any MCP client edit in JBD with the same commands the Director uses."
+---
+
+JBD ships an MCP server, `jbd-mcp.exe`, next to `jbd.exe`. An MCP client starts it as a local program and talks to it over stdio. It works in two modes:
+
+| Mode | What it drives | Started with |
+| --- | --- | --- |
+| **Bridge** | The JBD window you have open | `jbd-mcp.exe mcp --bridge 127.0.0.1:9876` |
+| **Headless** | A project in memory, with no window | `jbd-mcp.exe mcp --project "C:\path\film.fcproj"` or `--demo` |
+
+Nothing leaves your computer. The bridge only accepts connections from `127.0.0.1`.
+
+## Set up the bridge
+
+<Steps>
+  <Step title="Allow AI apps in JBD">
+    Open **Settings ▸ Connections** and tick **Let AI apps control JBD**. The page shows "On: listening on 127.0.0.1:9876". JBD remembers the choice and starts the bridge at every launch.
+  </Step>
+  <Step title="Copy the command for your client">
+    The same page shows a ready-to-copy command and config with the full path to `jbd-mcp.exe` on your computer. Use those; the examples below assume the jabrod.com installer's path.
+  </Step>
+  <Step title="Ask your client to edit">
+    For example: "Look at the active sequence in JBD and cut the first 3 seconds."
+  </Step>
+</Steps>
+
+## Client configuration
+
+<Tabs>
+  <Tab title="Claude Code">
+    Run once in a terminal:
+
+    ```bash
+    claude mcp add jbd -- "C:\Users\you\AppData\Local\JBD\jbd-mcp.exe" mcp --bridge 127.0.0.1:9876
+    ```
+  </Tab>
+  <Tab title="Claude Desktop">
+    In Claude Desktop, open **Settings ▸ Developer ▸ Edit Config** and add:
+
+    ```json claude_desktop_config.json
+    {
+      "mcpServers": {
+        "jbd": {
+          "command": "C:\\Users\\you\\AppData\\Local\\JBD\\jbd-mcp.exe",
+          "args": ["mcp", "--bridge", "127.0.0.1:9876"]
+        }
+      }
+    }
+    ```
+
+    Restart Claude Desktop.
+  </Tab>
+  <Tab title="Cursor">
+    Add to `.cursor/mcp.json` in your project, or `~/.cursor/mcp.json` for every project:
+
+    ```json .cursor/mcp.json
+    {
+      "mcpServers": {
+        "jbd": {
+          "command": "C:\\Users\\you\\AppData\\Local\\JBD\\jbd-mcp.exe",
+          "args": ["mcp", "--bridge", "127.0.0.1:9876"]
+        }
+      }
+    }
+    ```
+  </Tab>
+  <Tab title="Other clients">
+    Any client that runs stdio MCP servers works. Use the command `jbd-mcp.exe` with the arguments `mcp --bridge 127.0.0.1:9876`.
+  </Tab>
+</Tabs>
+
+## Headless mode
+
+Headless mode needs no JBD window. Use it for batch work and scripts.
+
+```bash
+claude mcp add jbd-headless -- "C:\Users\you\AppData\Local\JBD\jbd-mcp.exe" mcp --project "D:\films\trailer.fcproj" --save
+```
+
+| Flag | Meaning |
+| --- | --- |
+| `--project <file.fcproj>` | Open this project first. |
+| `--demo` | Open the built-in demo project. |
+| `--save` | Write the project back to `--project` when the session ends. |
+
+The `ui_*` tools need the bridge and return an error in headless mode.
+
+## Authentication
+
+None. The server runs as you, on your computer, and only reaches the JBD window through `127.0.0.1`. It does not use your Jabrod account and spends no AI credits.
+
+## Tools
+
+All times are in seconds unless a field says ticks. 254,016,000,000 ticks are one second.
+
+### Commands
+
+Every menu item, shortcut and timeline gesture in JBD is a command with an id. These tools run them.
+
+| Tool | Input | Returns |
+| --- | --- | --- |
+| `command_list` | `filter?` (text in the id or label), `enabled_only?` | Every command: id, label, menu path, shortcut, parameters, whether it can run now |
+| `command_run` | `id` (for example `timeline.razor`), `params?` | The command's result. Edits land in History and can be undone. |
+| `command_batch` | `steps: [{id, params?}]`, `stop_on_error?` (default `true`) | `{completed, failed, results: [{ok, result \| error}]}`. Each edit is its own undo step. |
+
+```json Example: split at 3.5 seconds
+{ "id": "timeline.razor", "params": { "seconds": 3.5 } }
+```
+
+### Project and sequence
+
+| Tool | Input | Returns |
+| --- | --- | --- |
+| `project_inspect` | none | Bins and items with ids, types and durations; the active sequence; the source clip |
+| `sequence_inspect` | none | The active sequence: settings, tracks, clips (ids, start and duration in ticks and frames, effects), transitions, markers, in and out points, playhead, selection |
+| `doc_inspect` | none | `project_inspect` and `sequence_inspect` in one call |
+| `media_import` | `text`: absolute paths, one per line | The imported items |
+
+### Rendering
+
+| Tool | Input | Returns |
+| --- | --- | --- |
+| `render_frame` | `seconds?` (default: the playhead), `max_side?` (default 960) | PNG of the active sequence's frame |
+| `render_preview` | same as `render_frame` | PNG. In bridge mode, a screenshot of the Program monitor. |
+
+### Window (bridge mode only)
+
+| Tool | Input | Returns |
+| --- | --- | --- |
+| `ui_inspect` | none | Tool, workspace, panels, timeline zoom, playback, selection, fps |
+| `ui_elements` | `prefix?` (for example `timeline.clip.`) | Every on-screen control with its id, label and position |
+| `ui_click` | `id`, or `x` and `y`; `button?`, `count?`, `modifiers?` | Clicks the control |
+| `ui_drag` | `from`, `to` (each `{id}` or `{x, y}`), `steps?`, `modifiers?` | Drags between them |
+| `ui_key` | `key` (for example `Space`, `Ctrl+K`, `Shift+Delete`) | Presses the key |
+| `ui_type` | `text` | Types into the focused field |
+| `ui_screenshot` | `panel?` (for example `Timeline`), `max_side?` (default 1600) | PNG of the window or one panel |
+| `ui_control` | `method`, `params?` | Calls a control-channel method directly, such as `ui.playback` |
+
+## A typical loop
+
+1. `sequence_inspect` to get clip ids and times.
+2. `command_run` to make the edit.
+3. `render_frame` or `ui_screenshot` to look at the result.
+4. `command_run` with `edit.undo` if it is wrong.
+
+## Troubleshooting
+
+| Message | Fix |
+| --- | --- |
+| "JBD's MCP program (jbd-mcp.exe) wasn't found next to JBD" | Reinstall JBD from jabrod.com. |
+| "Couldn't start: …" on the Connections page | Another program is using port 9876. Close it and restart JBD. |
+| The client can't connect in bridge mode | JBD must be open, with **Let AI apps control JBD** ticked. |

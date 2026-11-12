@@ -1,0 +1,47 @@
+---
+title: "Suites and scoring"
+sidebarTitle: "Suites and scoring"
+description: "What each suite checks, when it applies, and how a verdict is reached."
+---
+
+A run scores each case with the suites you picked. Each suite gives the case a pass or a fail with a one-line reason. A suite that doesn't apply to a case is skipped, not failed.
+
+| Suite | Applies when | How it is judged |
+| --- | --- | --- |
+| **Grounded in sources** | The app returned passages and answered | A judge model checks every claim against the passages the app used |
+| **Correctness** | The case has `expected` or `must_contain`, and shouldn't be refused | A judge compares the answer with `expected`; every `must_contain` phrase must appear |
+| **Correct refusals** | Always | A judge decides whether the app declined. Pass when that matches `should_refuse`. |
+| **Tool call arguments** | The case has an expected tool | Checked in code, no judge |
+| **Policy and tone** | You wrote a policy for the run | A judge checks the answer against your policy |
+
+## The judge
+
+Judged suites use one model call per case, which covers every judged suite at once. The judge is told to be strict and fair and to return its verdict as JSON. It sees the question, the answer, the passages, the expected answer and your policy, and nothing else.
+
+## Tool call arguments
+
+A case passes when the app made a call with the expected name, and every expected argument matches:
+
+- Text is compared ignoring case and surrounding spaces.
+- Objects match when every expected key matches. Extra keys from the app are allowed.
+- Lists must have the same items in the same order.
+
+The reason names the first argument that differed:
+
+```text
+date: expected "2026-11-20", got "20/11/2026"
+```
+
+## Policy and tone
+
+Write the policy in plain sentences. For example:
+
+```text Policy
+Answer in two sentences or fewer.
+Never promise a refund; say the support team will review the request.
+Address the customer as "you", never by name.
+```
+
+## Pass rate
+
+A suite's pass rate is the cases that passed divided by the cases it applied to. The run's overall pass rate counts every verdict across suites.

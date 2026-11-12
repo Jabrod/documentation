@@ -1,0 +1,68 @@
+---
+title: "Connect your data"
+description: "The CSV files Signals reads, the columns in each, and how dates are handled."
+---
+
+Signals reads CSV exports. Only the customers file is required.
+
+| File | Required | Used for |
+| --- | --- | --- |
+| Customers | Yes | Who your customers are, when they joined, their plan and revenue, and when they left |
+| Payments or subscriptions | Recommended | Failed payments and gaps in paying |
+| Usage events | Recommended | How often and how much each customer uses your product |
+| Support tickets | Optional | Ticket volume and its trend |
+
+Every file must have a customer id column that matches the customers file.
+
+## Columns
+
+Column names don't have to match these exactly. Signals guesses the mapping from your headers, and you confirm it.
+
+### Customers
+
+| Field | Example | Notes |
+| --- | --- | --- |
+| `customer_id` | `C-1042` | Required |
+| `name` | `Acme Logistics` | Shown in the report |
+| `signup_at` | `2025-03-14` | Required |
+| `plan` | `Growth` | |
+| `mrr` | `4999` | Monthly revenue, in your currency |
+| `cancelled_at` | `2026-08-02` | Empty while active. Needed for the "Cancelled" churn definition. |
+
+### Payments
+
+| Field | Example | Notes |
+| --- | --- | --- |
+| `customer_id` | `C-1042` | |
+| `paid_at` | `2026-10-01` | |
+| `amount` | `4999` | |
+| `status` | `paid` | `paid`, `failed` or `refunded` |
+
+### Usage events
+
+| Field | Example | Notes |
+| --- | --- | --- |
+| `customer_id` | `C-1042` | |
+| `occurred_at` | `2026-10-03T09:12:00Z` | |
+| `event_name` | `report_exported` | Your own event names. Signals finds which ones matter. |
+| `quantity` | `1` | Optional |
+
+### Support tickets
+
+| Field | Example | Notes |
+| --- | --- | --- |
+| `customer_id` | `C-1042` | |
+| `opened_at` | `2026-10-05` | |
+| `priority` | `high` | Optional |
+
+## Dates
+
+Signals detects the date format from each column's values and shows what it found before it imports anything. Use one format per column.
+
+## How much history
+
+Twelve months or more works best. With under 3 months of history, or fewer than about 50 customers who left, the report is marked "not enough history to trust this yet".
+
+## Database access
+
+Read-only access to your database, instead of exports, isn't available yet.

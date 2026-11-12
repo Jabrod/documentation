@@ -1,0 +1,52 @@
+---
+title: "Test sets"
+description: "Write test cases in CSV or JSONL, or build them from real questions."
+---
+
+A test set is a list of cases. Each case is one input to your app and what a good answer looks like. A test set holds up to 200 cases.
+
+## Fields
+
+| Field | Also accepted | Type | Used by |
+| --- | --- | --- | --- |
+| `input` | `question`, `query`, `prompt` | text, required | Every suite |
+| `expected` | `expected_answer`, `reference`, `answer`, `ideal` | text | Correctness |
+| `should_refuse` | `refuse`, `out_of_scope` | `true` / `false` (also `yes`, `1`) | Correct refusals, Correctness |
+| `must_contain` | `contains` | phrases separated by `\|` | Correctness |
+| `expected_tool` | `tool_call` | JSON `{"name", "arguments"}` | Tool call arguments |
+| `tool_name` and `tool_args` | | text and JSON | Tool call arguments, instead of `expected_tool` |
+| `tags` | `tag` | labels separated by `\|` | Filtering the report |
+
+Column names are not case-sensitive, and spaces or hyphens count as underscores, so `Expected Answer` works.
+
+## CSV
+
+```csv cases.csv
+input,expected,must_contain,should_refuse,tags
+"What is the refund window?","30 days from delivery","30 days",false,refunds
+"Can I return a gift card?","No. Gift cards can't be returned.","can't be returned",false,refunds|gift-cards
+"What's the weather in Delhi?",,,true,out-of-scope
+```
+
+Fields with commas or line breaks go in double quotes. A double quote inside a field is written twice.
+
+## JSONL
+
+One JSON object per line:
+
+```json cases.jsonl
+{"input": "What is the refund window?", "expected": "30 days from delivery", "must_contain": ["30 days"]}
+{"input": "Book a demo for 20 November", "expected_tool": {"name": "book_demo", "arguments": {"date": "2026-11-20"}}}
+{"input": "What's the weather in Delhi?", "should_refuse": true}
+```
+
+## From real questions
+
+If you test a [Context](/context/index) workspace, you can build a test set from the questions people already asked it. Evals takes the most recent ones as inputs; you add the expected answers.
+
+## Writing good cases
+
+- Use the words your users use, typos included.
+- Write `expected` as the facts that must be right, not as the exact wording.
+- Put a few out-of-scope questions in every set, marked `should_refuse`.
+- Keep `must_contain` to phrases that must appear verbatim, such as amounts and dates.

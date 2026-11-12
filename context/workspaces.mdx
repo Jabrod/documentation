@@ -1,0 +1,33 @@
+---
+title: "Workspaces"
+description: "Group sources, keep them apart, and delete them."
+---
+
+A workspace is a set of sources that are searched together. A question asked in one workspace never sees another workspace's sources.
+
+## When to make a new workspace
+
+- Sources for different audiences: one for customer support, one for internal HR policy.
+- Sources that contradict each other on purpose: last year's price list and this year's.
+- Anything you want to score separately in [Evals](/evals/index).
+
+## Ownership
+
+A workspace belongs to the account that created it. Shared workspaces for teams aren't available yet.
+
+## What a workspace keeps
+
+| Data | Kept until |
+| --- | --- |
+| Source text, passages and their index | You delete the source or the workspace |
+| Questions asked, answers and citations | You delete the workspace |
+
+The original uploaded file is read when you add it and is not stored; only its text is.
+
+## Deleting
+
+Deleting a source removes its passages straight away; it stops appearing in answers. Deleting a workspace removes every source, passage and saved question in it. Neither can be undone.
+
+## Embedding model
+
+Each workspace records the embedding model its passages were indexed with. Vectors from different models can't be compared, so a workspace keeps its model for life.

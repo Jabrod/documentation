@@ -1,0 +1,43 @@
+---
+title: "Cited answers"
+description: "How Context finds passages, writes an answer and cites it."
+---
+
+## Retrieval
+
+A question is searched two ways inside its workspace:
+
+- **By meaning**: the question's embedding against every passage's embedding.
+- **By keyword**: the question's words of three letters or more against the passages' full text. One rare word is enough to match.
+
+The two rankings are merged with reciprocal-rank fusion: 24 candidates in, the top 6 passages out. A passage that ranks well in both rises to the top.
+
+## The answer
+
+The model gets the question and the six passages, numbered, and is told to:
+
+- answer only from the passages;
+- end every sentence that states a fact with the number of the passage that supports it, like `[1]` or `[2][3]`;
+- say exactly "I can't find this in your sources." when the passages don't answer the question.
+
+## Citations
+
+The numbers in the answer are renumbered 1, 2, 3 in reading order. Each citation carries:
+
+| Field | Example |
+| --- | --- |
+| Number | `1` |
+| Document | `Returns policy.pdf` |
+| Locator | `Page 2` |
+| Passage | The exact text the claim rests on |
+| Source URL | For web pages |
+
+## Refusals
+
+A refusal is an answer, not an error. It means the workspace has nothing on the question. Add a source that covers it, or check that the source finished ingesting.
+
+To check how often Context refuses correctly, and how often its answers are grounded, score the workspace with [Evals](/evals/suites).
+
+## Models
+
+Answers are written by open-weight models. If one is busy, the next one in the list answers.

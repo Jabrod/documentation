@@ -1,38 +1,35 @@
 ---
-title: Introduction
-description: Welcome to Jabrod - The Enterprise AI Workspace
+title: "RAG API"
+sidebarTitle: "Introduction"
+description: "Retrieval pipelines you configure on agent.jabrod.com and query over a REST API."
 ---
 
-# Introduction
-
-Welcome to **Jabrod** — a comprehensive AI workspace designed to accelerate the development of intelligent applications. As we establish our foundational ecosystem, our inaugural live offering focuses exclusively on enterprise-grade Retrieval-Augmented Generation (RAG) capabilities, with a broader suite of AI tools on the horizon.
-
-## What is Jabrod?
-
-Jabrod serves as a robust infrastructure platform for engineering teams. At present, our platform provides a sophisticated backend tailored specifically for Retrieval-Augmented Generation (RAG). It seamlessly handles the complexities of document chunking, embeddings, vector database management, and semantic retrieval, enabling you to focus on building high-impact applications.
+The RAG API runs retrieval pipelines for your own applications. You create a pipeline on [agent.jabrod.com](https://agent.jabrod.com), add data to it, and query it over HTTPS with a pipeline API key. Jabrod handles chunking, embeddings, the vector store and retrieval.
 
 <CardGroup cols={2}>
-  <Card title="RAG Pipelines" icon="pipeline">
-    Configure chunking strategies, embedding models, and vector stores for your use case.
+  <Card title="Pipelines" icon="workflow" href="/concepts/pipelines">
+    Choose the chunking strategy, embedding model and vector store.
   </Card>
-  <Card title="Data Sources" icon="database">
-    Upload files, provide text, or link URLs to build your knowledge base.
+  <Card title="Data sources" icon="database" href="/concepts/data-sources">
+    Upload files, paste text or add URLs.
   </Card>
-  <Card title="API Keys" icon="key">
-    Generate secure, scoped API keys for each pipeline to use in your applications.
+  <Card title="API keys" icon="key" href="/api/api-keys">
+    One key per pipeline, for use in your application.
   </Card>
-  <Card title="Semantic Search" icon="magnifying-glass">
-    Query your pipelines with natural language to retrieve highly relevant context.
+  <Card title="Querying" icon="search" href="/concepts/querying">
+    Ask in plain language and get back the most relevant passages.
   </Card>
 </CardGroup>
 
-## Getting Started
+## Get started
 
 <CardGroup cols={2}>
-  <Card title="Quick Start" icon="rocket" href="/quickstart">
-    Learn how to create your first pipeline and run a query.
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Create a pipeline and run a first query.
   </Card>
-  <Card title="API Reference" icon="code" href="/api/overview">
-    Explore the REST API documentation for programmatic access.
+  <Card title="API reference" icon="code" href="/api/overview">
+    Every endpoint, with request and response examples.
   </Card>
 </CardGroup>
+
+<Note>Looking for cited answers from your company's documents, with no code? See [Context by Jabrod](/context/index).</Note>

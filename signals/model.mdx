@@ -1,0 +1,57 @@
+---
+title: "The model"
+description: "How Signals trains, validates and explains its predictions."
+---
+
+You get one model, trained only on your data.
+
+## Features
+
+For each customer, as of a given date, Signals computes:
+
+- Tenure, plan and monthly revenue.
+- Days since the last usage event; events in the last 7 and 30 days; active days in the last 30.
+- **Usage trend**: the last 3 weeks against the 3 weeks before, as a percentage.
+- Distinct features used in 30 days, and days since the most telling event was last used.
+- Failed payments in 60 and 90 days; days since the last successful payment.
+- Support tickets in 30 days, and their trend.
+
+A feature only uses data dated on or before that date. The model never sees the future.
+
+## Training
+
+1. **Snapshots.** Every 14 days through your history, Signals takes each active customer, computes their features as of that day, and records whether they churned within the prediction window after it.
+2. **Time split.** The most recent fifth of snapshot dates is held back for testing. The model trains only on earlier dates.
+3. **Model.** A small, regularised gradient-boosted model (LightGBM), with its probabilities calibrated so that "62%" means roughly 62 in 100.
+4. **Final fit.** After testing, the model is retrained on all snapshots and scores every active customer.
+
+## Quality numbers
+
+Each report shows how the model did on the held-back months:
+
+| Number | What it tells you |
+| --- | --- |
+| ROC AUC | How well it ranks leavers above stayers. 0.5 is a coin flip; 1.0 is perfect. |
+| PR AUC | The same, weighted toward the customers you would act on. |
+| Precision in the top 10% | Of the customers it flagged, how many really left. |
+| Lift | How much better than picking customers at random. |
+| Base rate | How many customers churn in a normal window. |
+| Counts | Customers, snapshots and churn events behind the numbers. |
+
+Two warnings appear when they apply:
+
+- **Not enough history**: under 3 months of data or about 50 churn events.
+- **Possible leakage**: an AUC above 0.97 usually means a column is only filled in after a customer leaves.
+
+## Reasons
+
+Every score comes with the two or three things pushing that customer's risk up most, measured with SHAP values and written from templates with the customer's own numbers:
+
+- "Usage down 62% in 3 weeks"
+- "Two failed payments in 60 days"
+- "No activity in 18 days"
+- "Support tickets up, logins down"
+- "Hasn't used Reports in 30 days"
+- "Joined 41 days ago"
+
+No AI model writes the reasons, and no customer data is sent to one.
