@@ -68,11 +68,11 @@ On a plan without MCP access, every tool answers: "The Evals MCP server is part 
 
 | Tool | Input | Returns |
 | --- | --- | --- |
-| `list_targets` | `project_id?` | `[{id, name, kind, project_id, workspace_id}]` |
+| `list_targets` | `project_id?` | `[{id, name, kind, project_id, workspace_id}]`. `kind` is `context`, `http`, `openai` or `traces`. |
 | `list_datasets` | `project_id?` | `[{id, name, cases, recorded_outputs, source, project_id}]` |
 | `create_dataset` | `name`, `cases`, `project_id?` | `{id, cases}` |
 | `start_run` | `dataset_id`, one of `target_id` / `workspace_id` / `traces: true`, `suites?`, `policy?` | `{run_id, status: "queued"}` |
-| `get_run` | `run_id` | `{status, completed, total, pass_rate, by_suite, failures: [{input, suite, reason}]}` |
+| `get_run` | `run_id` | `{status, completed, total, pass_rate, by_suite, failures: [{input, suite, reason}], url}` |
 | `list_runs` | `project_id?`, `limit?` | Recent runs with their status and pass rate by suite |
 | `compare_runs` | `base_run_id`, `head_run_id` | Per suite `{base, head, delta}`, and `regressed: [{input, suite}]` |
 

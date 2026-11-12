@@ -167,7 +167,8 @@
           {
             "group": "Reference",
             "pages": [
-              "evals/mcp"
+              "evals/mcp",
+              "evals/ci"
             ]
           }
         ]
