@@ -4,12 +4,12 @@ sidebarTitle: "Overview"
 description: "Use Jabrod products from Claude, Cursor and more."
 ---
 
-The Model Context Protocol (MCP) lets an AI app such as Claude Code, Claude Desktop or Cursor use another program's tools. JBD, Context and Evals have MCP servers today.
+The Model Context Protocol (MCP) lets an AI app such as Claude Code, Claude Desktop or Cursor use another program's tools. JBD, the Art studio, Context and Evals have MCP servers today.
 
 | Product | Server | Available | Setup |
 | --- | --- | --- | --- |
 | JBD | `jbd-mcp.exe`, a local program installed with JBD | Yes | [Connect JBD](/art/jbd/mcp) |
-| Art studio | Remote server on jabrod.com | Not yet | [Art studio MCP](/art/studio/mcp) |
+| Art studio | `https://jabrod.com/api/mcp/art` | Yes | [Connect the Art studio](/art/studio/mcp) |
 | Signals | Remote server on jabrod.com | Not yet | [Signals MCP](/signals/mcp) |
 | Evals | `https://jabrod.com/api/mcp/evals` | Yes, on Evals Pro | [Connect Evals](/evals/mcp) |
 | Context | `https://jabrod.com/api/mcp/context` | Yes | [Connect Context](/context/mcp) |
@@ -17,7 +17,7 @@ The Model Context Protocol (MCP) lets an AI app such as Claude Code, Claude Desk
 ## Local and remote servers
 
 - A **local** server is a program on your computer. The client starts it and talks to it over stdio. JBD's server is local because your projects are local.
-- A **remote** server runs on jabrod.com and works on the data in your Jabrod account. The client connects to it over HTTPS and signs in with a personal API key from [jabrod.com/app/keys](https://jabrod.com/app/keys). Context and Evals have remote servers.
+- A **remote** server runs on jabrod.com and works on the data in your Jabrod account. The client connects to it over HTTPS and either [signs in with Jabrod](/platform/sign-in#mcp-clients) or sends a personal API key from [jabrod.com/app/keys](https://jabrod.com/app/keys). The Art studio, Context and Evals have remote servers.
 
 ## Tool names
 
