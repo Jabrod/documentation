@@ -1,0 +1,39 @@
+---
+title: "The at-risk report"
+sidebarTitle: "At-risk report"
+description: "Read the list, check the model, and export it."
+---
+
+The report is the last step of a workspace. It appears once a model has been trained.
+
+## Customers at risk this week
+
+Each row is one active customer, highest risk first:
+
+| Column | Meaning |
+| --- | --- |
+| Customer | Name, plan and monthly revenue where you uploaded them, or the customer id |
+| Risk | The chance of churning within your prediction window, as a percentage, with a bar |
+| Reasons | The things raising this customer's risk most, from [the model's templates](/signals/model#reasons) |
+
+Show the **Top 25**, **Top 50** or **All**, and use **Find a customer** to search by name or id. A customer with nothing pushing their risk up shows "No single strong reason".
+
+## How good is this model
+
+Next to the list, the model's results on the most recent weeks, which it never saw while training:
+
+- **AUC on unseen weeks**, with a verdict: good, fair, weak, not enough history, or too good to be true. See [quality numbers](/signals/model#quality-numbers).
+- **Top 10% flagged** and **Top 50 flagged**: of the customers ranked highest, how many really left within the window.
+- **Learned from**: how many customers, how many of them left, over how many days.
+- **Tested on**: the customer-weeks and dates the numbers come from, and the date training stopped.
+
+Read this before acting on the list. A weak model means more history or usage data would help.
+
+## What drives risk here
+
+The features that mattered most to this workspace's model, across all customers.
+
+## Export and retrain
+
+- **Export CSV** downloads the whole list with every column.
+- **Retrain** trains the model again on the data in the workspace.

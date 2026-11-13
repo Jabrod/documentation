@@ -16,7 +16,25 @@ It speaks Streamable HTTP and answers each request with JSON. A coding agent can
 
 ## Authentication
 
-Make a personal API key at [jabrod.com/app/keys](https://jabrod.com/app/keys). It starts with `jbd_sk_` and is shown once. Send it with every request:
+There are two ways in. Both send `Authorization: Bearer …` with every request.
+
+### Sign in with Jabrod
+
+Add the server without a key. The first time your client connects, it opens jabrod.com in your browser: sign in, and allow the app to use your account. The token it gets works only for this server.
+
+In Claude Code:
+
+```bash
+claude mcp add --transport http jabrod-evals https://jabrod.com/api/mcp/evals
+```
+
+Then run `/mcp` in Claude Code, choose `jabrod-evals`, and sign in.
+
+This needs a client that supports MCP authorization. [Sign in with Jabrod](/platform/sign-in#mcp-clients) explains the flow.
+
+### API key
+
+For clients that can't sign in, make a personal API key at [jabrod.com/app/keys](https://jabrod.com/app/keys). It starts with `jbd_sk_` and is shown once. Send it with every request:
 
 ```http
 Authorization: Bearer jbd_sk_…
@@ -24,7 +42,7 @@ Authorization: Bearer jbd_sk_…
 
 On a plan without MCP access, every tool answers: "The Evals MCP server is part of Evals Pro."
 
-## Client configuration
+## Client configuration with an API key
 
 <Tabs>
   <Tab title="Claude Code">

@@ -1,18 +1,28 @@
 ---
 title: "Quickstart"
-description: "Start a Signals pilot."
+description: "From your first upload to the at-risk list."
 ---
 
+Open [jabrod.com/app/signals](https://jabrod.com/app/signals) and sign in. You have two ways to start:
+
+- **Try it with demo data** creates a workspace from a made-up company's customers, payments, usage and tickets, so you can see a report without your own data.
+- **Use your own data** creates an empty workspace. Name it, for example after your company.
+
+A workspace has four steps, in order, and a settings page.
+
 <Steps>
-  <Step title="Apply">
-    Fill in the form at [jabrod.com/signals/apply](https://jabrod.com/signals/apply).
+  <Step title="Data">
+    Upload your customers CSV, and payments, usage events and support tickets if you have them. See [Connect your data](/signals/connect-data).
   </Step>
-  <Step title="Prepare your exports">
-    Export your customers as CSV. Add payments, usage events and support tickets if you have them. [Connect your data](/signals/connect-data) lists the columns Signals reads.
+  <Step title="Columns">
+    Check how your columns were matched to Signals' fields, and fix any guess. Then your files are read into the workspace.
   </Step>
-  <Step title="Choose what churn means">
-    Pick one of the three [churn definitions](/signals/churn-definition) for your business.
+  <Step title="Churn">
+    Answer **When has a customer left?** and choose how far ahead to predict. Each choice shows how many of your customers it counts as having left. Then choose **Train the model**. See [Churn definition](/signals/churn-definition).
+  </Step>
+  <Step title="Report">
+    Read **How good is this model** first, then the customers at risk, each with their reasons. See [The at-risk report](/signals/weekly-report).
   </Step>
 </Steps>
 
-During a pilot, the Jabrod team loads your exports and trains the model with you. [The model](/signals/model) explains how it is trained, tested and explained.
+[The model](/signals/model) explains how it is trained, tested and explained.

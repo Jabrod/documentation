@@ -27,7 +27,7 @@ A feature for a date only uses rows dated on or before it. Status and cancellati
 
 ## Training and testing
 
-1. **Snapshots.** Every 14 days through your history, each active customer's features are computed as of that day, and labelled by whether they churned in the 30 days after it.
+1. **Snapshots.** Every 14 days through your history, each active customer's features are computed as of that day, and labelled by whether they churned within the prediction window after it (30 days by default).
 2. **Time split.** The most recent fifth of snapshot dates is held back for testing. The model is trained on the earlier dates only.
 3. **Model.** LightGBM, with early stopping, and class weights for the rarer churners. Scores are calibrated on the held-back weeks with isotonic regression.
 4. **Final fit.** The model is retrained on every labelled date, with the same settings, to score today's customers.

@@ -3,18 +3,18 @@ title: "Churn definition"
 description: "What counts as a customer leaving."
 ---
 
-The model learns from customers who left in the past, so "left" has to be defined first. There are three definitions:
+The model learns from customers who left in the past, so "left" has to be defined first. In a workspace's **Churn** step, answer **When has a customer left?** with one of three definitions:
 
-| Definition | A customer has churned when | Needs |
+| Choice | A customer has left when | Needs |
 | --- | --- | --- |
-| **Cancelled** | They have a cancellation date, or a status such as `cancelled` | The customers file |
-| **Stopped paying** | No successful payment for 45 days after their last one | A payments file |
-| **Went quiet** | No usage events for 30 days | A usage events file |
+| **They cancel** | They have a cancellation date, or a status such as `cancelled` | A **Cancelled on** or **Status** column in the customers file |
+| **They stop paying** | No payment has succeeded for a number of days (45 by default) | A payments file |
+| **They go quiet** | They haven't used the product for a number of days (30 by default) | A usage events file |
 
-The number of days for **Stopped paying** and **Went quiet** can be changed.
+You can change the number of days for the last two. Each choice shows how many of your customers it counts as having left, so you can compare them before training. Pick the definition your team already uses.
 
-For **Cancelled**, a customer whose status says they left but who has no cancellation date is counted as leaving on their last activity.
+For **They cancel**, a customer whose status says they left but who has no cancellation date counts as leaving on their last activity.
 
 ## Prediction window
 
-A score answers: how likely is this customer to churn in the next 30 days?
+**Predict who leaves in the next** 14, 30, 60 or 90 days. The default is 30. A score is the chance that a customer leaves within that window.
