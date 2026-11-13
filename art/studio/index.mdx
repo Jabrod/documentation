@@ -1,11 +1,59 @@
 ---
 title: "Art studio"
 sidebarTitle: "Overview"
-description: "A canvas for images, video and voice."
+description: "Chat, generate and arrange images and voice on one canvas."
 ---
 
-<Note>The Art studio isn't released yet. Setup and usage will be documented here when you can use it.</Note>
+The Art studio is at [art.jabrod.com/studio](https://art.jabrod.com/studio). Choose **Sign in to Jabrod** and use your [Jabrod account](/platform/account). If you are already signed in on jabrod.com, there is no second screen.
 
-The Art studio is a canvas where you generate images, video clips and voice lines, arrange them on boards, and take the video into [JBD](/art/jbd/install) to edit.
+Every account gets 50 AI credits free each month. Generation spends them, and each studio shows a generation's cost before you run it. Plans are on [jabrod.com/art](https://jabrod.com/art#plans), or **Plans** inside the studio.
 
-Plans for the Art studio are on [jabrod.com/art](https://jabrod.com/art#plans).
+## What's in it
+
+| Part | What it does |
+| --- | --- |
+| **Chat** | A general assistant, with your chat history in the sidebar. When it writes a generation prompt, the prompt appears as a card you can send to a board or a studio. |
+| **Image Studio** | A prompt box with the model's options and credit cost, and every image you've made underneath. |
+| **Voice Studio** | The same for voice lines from text. |
+| **Canvas** | Boards you build from nodes and connections. |
+| **Library** | Every file you've uploaded or generated. |
+
+## Boards
+
+Open **Canvas** to see your boards, or make a new one. A board is built from six kinds of node:
+
+| Node | Key | Holds |
+| --- | --- | --- |
+| Prompt | `P` | Text. Connect it to a generator to fill that generator's prompt. |
+| Image | `I` | A generated or uploaded image |
+| Video | `V` | An uploaded clip |
+| Audio | `A` | A generated voice line or an uploaded audio file |
+| Note | `N` | Plain text for notes on the board |
+| Export | `E` | The media wired into it, ready to download |
+
+- Drag image, video or audio files onto the board, or paste an image, to add them.
+- `Ctrl+Z` undoes, `Ctrl+Shift+Z` or `Ctrl+Y` redoes, and `Ctrl+D` duplicates the selection.
+- Boards save automatically. If the same board was saved somewhere else in the meantime, the studio reloads the latest version.
+
+## From the studio to JBD
+
+Connect the media you want into an **Export** node and choose **Download all**. Each node with media also has its own **Download**. Then import the files into [JBD](/art/jbd/first-edit) to edit.
+
+## Open source
+
+The studio is published on GitHub at [Jabrod/art](https://github.com/Jabrod/art) under Apache-2.0. Accounts, generation and credits are on jabrod.com and aren't part of the repository.
+
+Run it yourself:
+
+```bash
+git clone https://github.com/Jabrod/art.git
+cd art
+npm install
+npm run dev        # http://localhost:3100/studio
+```
+
+On its own, the studio runs in local mode: boards and files stay in your browser, and chat and generation are switched off because they need a backend. To use another backend with the same API, set `NEXT_PUBLIC_ART_API`.
+
+## MCP
+
+Use the studio's boards, files and generation from Claude, Cursor and other clients: [Connect the Art studio over MCP](/art/studio/mcp).
