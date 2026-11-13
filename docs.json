@@ -62,6 +62,7 @@
             "pages": [
               "index",
               "platform/account",
+              "platform/sign-in",
               "platform/status",
               "platform/pricing"
             ]
@@ -119,7 +120,9 @@
           {
             "group": "Guides",
             "pages": [
-              "signals/connect-data"
+              "signals/connect-data",
+              "signals/weekly-report",
+              "signals/workspaces"
             ]
           },
           {
