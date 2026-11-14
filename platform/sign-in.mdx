@@ -4,20 +4,25 @@ sidebarTitle: "Sign in with Jabrod"
 description: "One OAuth 2.1 and OpenID Connect server for every Jabrod product."
 ---
 
-Every Jabrod product signs people in through one authorization server, Jabrod Accounts, at `https://jabrod.com`. It implements OAuth 2.1 and OpenID Connect. Passwords are only ever typed at [jabrod.com/sign-in](https://jabrod.com/sign-in).
+Every Jabrod product signs people in through one authorization server, Jabrod Accounts, at `https://auth.jabrod.com`. It implements OAuth 2.1 and OpenID Connect. Passwords are only ever typed on its sign-in page, `auth.jabrod.com/sign-in`.
+
+The products and their APIs stay where they are: jabrod.com, art.jabrod.com, and the MCP servers at `https://jabrod.com/api/mcp/<product>`.
 
 ## Endpoints
 
 | | |
 | --- | --- |
-| Discovery | `https://jabrod.com/.well-known/oauth-authorization-server`, also `/.well-known/openid-configuration` |
-| Authorize | `https://jabrod.com/oauth/authorize` |
-| Token | `POST https://jabrod.com/oauth/token` (form-encoded or JSON) |
-| Revoke | `POST https://jabrod.com/oauth/revoke` (RFC 7009) |
-| UserInfo | `https://jabrod.com/oauth/userinfo` (needs the `openid` scope) |
-| JWKS | `https://jabrod.com/oauth/jwks.json` (ES256) |
-| Register | `POST https://jabrod.com/oauth/register` (MCP clients only, RFC 7591) |
-| Sign out | `https://jabrod.com/oauth/logout?post_logout_redirect_uri=…` |
+| Issuer | `https://auth.jabrod.com` |
+| Discovery | `https://auth.jabrod.com/.well-known/openid-configuration`, also `/.well-known/oauth-authorization-server`. `https://jabrod.com/.well-known/oauth-authorization-server` returns the same document. |
+| Authorize | `https://auth.jabrod.com/oauth/authorize` |
+| Token | `POST https://auth.jabrod.com/oauth/token` (form-encoded or JSON) |
+| Revoke | `POST https://auth.jabrod.com/oauth/revoke` (RFC 7009) |
+| UserInfo | `https://auth.jabrod.com/oauth/userinfo` (needs the `openid` scope) |
+| JWKS | `https://auth.jabrod.com/oauth/jwks.json` (ES256) |
+| Register | `POST https://auth.jabrod.com/oauth/register` (MCP clients only, RFC 7591) |
+| Sign out | `https://auth.jabrod.com/oauth/logout?post_logout_redirect_uri=…` |
+
+Read endpoints from the discovery document rather than hard-coding them.
 
 ## Rules
 
@@ -41,15 +46,15 @@ Every Jabrod product signs people in through one authorization server, Jabrod Ac
 
 - **Access tokens** are ES256 JWTs (`typ: at+jwt`) that last one hour. Their `aud` is the product's API, `https://jabrod.com/api/<product>`, or the MCP server URL the client asked for with `resource`.
 - **ID tokens** are signed with ES256. Claims: `sub`, `email`, `email_verified`, `name`, `picture`, `sid`.
-- Verify tokens with the keys at `https://jabrod.com/oauth/jwks.json`.
+- Verify tokens with the keys at `https://auth.jabrod.com/oauth/jwks.json`, and check that `iss` is `https://auth.jabrod.com`.
 
 ## By product
 
 | Product | How it signs you in |
 | --- | --- |
-| jabrod.com apps (`/app/context`, `/app/evals`, `/app/signals`, `/app/keys`, `/account`) | The jabrod.com session directly. Signed out, you go to `/sign-in` and come back to the page you were on. |
-| art.jabrod.com | A first-party client with its own session on the art host. If you are already signed in on jabrod.com, there is no second screen. Signing out on Art signs you out of jabrod.com too. |
-| JBD | Its browser sign-in at `/desktop/authorize`, unchanged. Installed versions keep working, and their existing sessions stay valid. See [Your Jabrod account](/platform/account#sign-in-from-jbd). |
+| jabrod.com (`/app/context`, `/app/evals`, `/app/signals`, `/app/keys`) | jabrod.com is a client of auth.jabrod.com. Its **Sign in** sends you to auth.jabrod.com and back. |
+| art.jabrod.com and the Art studio | Also a client of auth.jabrod.com, with its own session on the art host. |
+| JBD | Its browser sign-in now opens `auth.jabrod.com/desktop/authorize`. `jabrod.com/desktop/authorize` redirects there, so installed versions keep working. See [Your Jabrod account](/platform/account#sign-in-from-jbd). |
 | MCP clients | Sign in from the client, as below. |
 | docs.jabrod.com | Needs no sign-in. |
 
@@ -63,11 +68,11 @@ Each remote MCP server, `https://jabrod.com/api/mcp/<product>`, is an OAuth prot
    WWW-Authenticate: Bearer resource_metadata="https://jabrod.com/.well-known/oauth-protected-resource/api/mcp/context", scope="context"
    ```
 
-2. The client reads that metadata and the authorization server's, registers itself (a Client ID Metadata Document, or `POST /oauth/register`), and opens `/oauth/authorize` with `resource=https://jabrod.com/api/mcp/<product>`.
-3. You see a consent screen once, asking whether the app may use your Jabrod account. The client gets a token for that one server.
+2. That metadata names `https://auth.jabrod.com` as the authorization server. The client reads its discovery document, registers itself (a Client ID Metadata Document, or `POST https://auth.jabrod.com/oauth/register`), and opens `https://auth.jabrod.com/oauth/authorize` with `resource=https://jabrod.com/api/mcp/<product>`.
+3. You sign in if you need to, and see a consent screen once, asking whether the app may use your Jabrod account. The client gets a token for that one server.
 
 Personal API keys from [jabrod.com/app/keys](https://jabrod.com/app/keys) still work for clients that can't sign in, and for CI.
 
 ## Signing out everywhere
 
-[jabrod.com/account](https://jabrod.com/account) lists the apps and devices signed in to your account. **Sign out everywhere** also signs out JBD on every computer and every MCP app.
+[auth.jabrod.com/account](https://auth.jabrod.com/account) lists the apps and devices signed in to your account. **Sign out everywhere** also signs out JBD on every computer and every MCP app. `jabrod.com/account` redirects there.
