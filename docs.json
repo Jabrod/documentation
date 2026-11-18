@@ -210,6 +210,19 @@
         ]
       },
       {
+        "product": "Inspect",
+        "description": "Visual inspection for manufacturing",
+        "icon": "scan-search",
+        "groups": [
+          {
+            "group": "Overview",
+            "pages": [
+              "inspect/index"
+            ]
+          }
+        ]
+      },
+      {
         "product": "RAG API",
         "description": "Pipelines API on agent.jabrod.com",
         "icon": "database",
