@@ -4,18 +4,29 @@ sidebarTitle: "AI Director"
 description: "Describe an edit. The Director makes it and checks it."
 ---
 
-<Info>The Director is part of [JBD Pro](/art/jbd/pro-and-credits).</Info>
+<Info>The Director is in Art Studio for Windows (JBD), and is part of [Art Pro](/art/jbd/pro-and-credits). It isn't in Art Studio's web Editor yet.</Info>
 
-The Director is JBD's own agent. You write what you want ("cut the pauses out of the interview", "add a 6-second intro shot of a city at night"). It writes a plan, runs editing tools one step at a time in front of you, can generate video and voiceover, and looks at rendered frames before it reports back.
+The Director is JBD's own agent. You write what you want, and it edits the clips you imported on your own timeline. It writes a plan, runs editing tools one step at a time in front of you, and looks at rendered frames before it reports back.
+
+## What it does with your footage
+
+Since version 1.2.0, ask for things like "cut the silences", "make a 30-second version", "trim the intro, add captions and put the music under it" or "cut this to the beat".
+
+- **It listens before it cuts.** It reads what is said (clips without a transcript are transcribed on your computer first), finds pauses from the sound, and finds the beat of your music and the shot changes in long clips.
+- **You see the edit first.** Cuts, trims, removals and reordering show as a preview: what goes, how long the edit will be, and a line for each change. Apply it or skip it.
+- **Music sits under the edit.** Music goes on its own track, ends with the picture, fades in and out, and gets quieter whenever someone speaks.
+- Picture and sound stay in sync on every track.
+
+Video generation isn't available yet, so the Director edits footage you already have.
 
 ## Open it
 
-The Director is a tab on the right side of JBD, next to the Inspector and Transcript. Its prompt box takes text and attached files. `Enter` sends; `Shift+Enter` starts a new line.
+The Director is a tab on the right side of Art Studio for Windows, next to the Inspector and Transcript. Its prompt box takes text and attached files. `Enter` sends; `Shift+Enter` starts a new line.
 
 Inside the prompt box you pick:
 
 - **Thinking model**: the model that plans and runs the edit.
-- **Video model**: the model used when the Director generates a clip.
+- **Video model**: for generating clips, which isn't available yet.
 - **Mode**: Ask, Auto edits or Plan.
 
 ## Modes
@@ -26,7 +37,6 @@ Inside the prompt box you pick:
 | **Auto edits** (default) | Edits run straight away. Anything that spends credits asks first. |
 | **Plan** | Read-only. The Director looks and proposes, but changes nothing. Switch modes to run the plan. |
 
-Generating video always asks first, in every mode.
 
 ## Undo
 
@@ -56,4 +66,4 @@ Connectors run as local programs over stdio. HTTP servers are not supported yet.
 
 ## Credits
 
-Thinking, video and voiceover draw from your monthly [AI credits](/art/jbd/pro-and-credits#ai-credits). The Director shows the credits left under the prompt box, and the cost of a video before you approve it.
+The Director's work draws from your monthly [AI credits](/art/jbd/pro-and-credits#ai-credits). It shows the credits left under the prompt box.

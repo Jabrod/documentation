@@ -1,16 +1,16 @@
 ---
-title: "Connect the Art studio over MCP"
+title: "Connect Art Studio over MCP"
 sidebarTitle: "Connect over MCP"
-description: "Use the Art studio from Claude, Cursor and other MCP clients."
+description: "Use Art Studio from Claude, Cursor and other MCP clients."
 ---
 
-The Art studio's MCP server is a remote server at:
+Art Studio's MCP server is a remote server at:
 
 ```text
 https://jabrod.com/api/mcp/art
 ```
 
-It speaks Streamable HTTP and answers each request with JSON. Tools act on the boards and media of the account you signed in with, or that owns the API key, and generation spends that account's Art credits, the same as in the studio.
+It speaks Streamable HTTP and answers each request with JSON. Tools act on the boards and media of the account you signed in with, or that owns the API key, and generation spends that account's Art credits, the same as in Art Studio.
 
 ## Authentication
 
@@ -100,4 +100,4 @@ Authorization: Bearer jbd_sk_…
 
 ## Errors
 
-A problem you can fix comes back as a tool result with `isError: true` and the studio's own message, for example when you run out of credits. Requests without a valid key get HTTP 401.
+A problem you can fix comes back as a tool result with `isError: true` and Art Studio's own message, for example when you run out of credits. Requests without a valid key get HTTP 401.
