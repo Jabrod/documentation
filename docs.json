@@ -76,31 +76,28 @@
         ]
       },
       {
-        "product": "Art",
-        "description": "JBD, the video editor, and the Art studio",
+        "product": "Art Studio",
+        "description": "Art Studio on the web and as an app, and Art Studio for Windows (JBD)",
         "icon": "palette",
         "groups": [
           {
-            "group": "Overview",
+            "group": "Art Studio",
             "pages": [
-              "art/index"
+              "art/index",
+              "art/studio/install",
+              "art/studio/index",
+              "art/studio/editor",
+              "art/jbd/pro-and-credits",
+              "art/studio/mcp"
             ]
           },
           {
-            "group": "JBD",
+            "group": "Art Studio for Windows (JBD)",
             "pages": [
               "art/jbd/install",
               "art/jbd/first-edit",
               "art/jbd/director",
-              "art/jbd/pro-and-credits",
               "art/jbd/mcp"
-            ]
-          },
-          {
-            "group": "Art studio",
-            "pages": [
-              "art/studio/index",
-              "art/studio/mcp"
             ]
           }
         ]
